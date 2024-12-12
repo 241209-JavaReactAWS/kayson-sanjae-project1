@@ -1,6 +1,12 @@
 package com.revature.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="pokemons")
 public class Pokemon{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int pokemonId;
     private String name;
     private PokemonType type1;

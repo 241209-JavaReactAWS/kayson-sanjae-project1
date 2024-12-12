@@ -1,6 +1,5 @@
 package com.revature.models;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.*;
 
 @Entity
