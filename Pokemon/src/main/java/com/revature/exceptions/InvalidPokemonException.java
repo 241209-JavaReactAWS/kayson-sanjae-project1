@@ -1,5 +1,5 @@
 package com.revature.exceptions;
 
-public class InvalidPokemonIdException extends Exception{
+public class InvalidPokemonException extends Exception{
 
 }

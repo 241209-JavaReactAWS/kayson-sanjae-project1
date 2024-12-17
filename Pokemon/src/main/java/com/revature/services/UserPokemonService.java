@@ -5,7 +5,7 @@ import com.revature.models.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserPokemonService {
@@ -16,15 +16,28 @@ public class UserPokemonService {
         this.userPokemonDAO = userPokemonDAO;
     }
 
-    public Pokemon getPokemonByName(String name){
-        return userPokemonDAO.findPokemonByName(name);
+    public Optional<Pokemon> getPokemonByUserIdAndName(int userId, String name){
+        return userPokemonDAO.findPokemonByName(userId, name);
     }
 
-    public List<Pokemon> getAllPokemonByUserID(int userId){
-        return userPokemonDAO.findAllByUserId(userId);
+    public Set<Pokemon> getFilterPokemons(int userId, List<String> types, int isAcquired){
+        Set<Pokemon> set = new HashSet<>();
+        if (isAcquired == 0) {
+            set.addAll(userPokemonDAO.findAcquired(userId));
+            set.addAll(userPokemonDAO.findUnacquired(userId));
+        } else if (isAcquired == 1) {
+            set.addAll(userPokemonDAO.findAcquired(userId));
+        } else if (isAcquired == 2) {
+            set.addAll(userPokemonDAO.findUnacquired(userId));
+        }
+
+        Set<Pokemon> unionOfTypes = new HashSet<>();
+        for(String type : types){
+            unionOfTypes.addAll(userPokemonDAO.findByType(type));
+        }
+
+        set.retainAll(unionOfTypes);
+        return set;
     }
 
-    public List<Pokemon> getAllUnacquiredPokemonByUserId(int userId){
-        return userPokemonDAO.findAllNotAcquiredByUser(userId);
-    }
 }

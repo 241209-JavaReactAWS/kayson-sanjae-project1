@@ -9,7 +9,9 @@ public class Pokemon{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pokemonId;
     private String name;
+    @Enumerated(EnumType.STRING)
     private PokemonType type1;
+    @Enumerated(EnumType.STRING)
     private PokemonType type2;
     private String imgUrl;
 
