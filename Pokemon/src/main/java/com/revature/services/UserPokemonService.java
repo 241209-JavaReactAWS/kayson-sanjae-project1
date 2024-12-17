@@ -16,6 +16,10 @@ public class UserPokemonService {
         this.userPokemonDAO = userPokemonDAO;
     }
 
+    public Pokemon getPokemonByName(String name){
+        return userPokemonDAO.findPokemonByName(name);
+    }
+
     public List<Pokemon> getAllPokemonByUserID(int userId){
         return userPokemonDAO.findAllByUserId(userId);
     }

@@ -12,9 +12,12 @@ import java.util.List;
 
 @Repository
 public interface UserPokemonDAO extends JpaRepository<UserPokemon, Integer> {
+    @Query("from pokemons p join userPokemons up on up.pokemon_id = p.pokemon_id where name = :name")
+    Pokemon findPokemonByName(@Param("name") String name);
+
     @Query("from userPokemons where user_id = :userId")
     List<Pokemon> findAllByUserId(@Param("userId")int userId);
 
-    @Query("from pokemon p where p.id not in (select up.pokemon.id from userPokemons up where up.user.id = :userId)")
+    @Query("from pokemons p where p.id not in (select up.pokemon.id from userPokemons up where up.user.id = :userId)")
     List<Pokemon> findAllNotAcquiredByUser(@Param("userId") int userId);
 }
