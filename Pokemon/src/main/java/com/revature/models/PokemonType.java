@@ -19,5 +19,9 @@ public enum PokemonType {
     DARK,
     STEEL,
     FAIRY,
-    STELLAR
+    STELLAR;
+
+    public static PokemonType fromString(String type) {
+        return PokemonType.valueOf(type.toUpperCase());  // Assuming correct type, convert to uppercase
+    }
 }

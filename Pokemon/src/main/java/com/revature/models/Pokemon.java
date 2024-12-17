@@ -6,20 +6,20 @@ import jakarta.persistence.*;
 @Table(name="pokemons")
 public class Pokemon{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pokemonId;
     private String name;
     private PokemonType type1;
     private PokemonType type2;
+    private String imgUrl;
 
-    public Pokemon(){
+    public Pokemon(){}
 
-    }
-
-    public Pokemon(String name, PokemonType type1, PokemonType type2) {
+    public Pokemon(String name, PokemonType type1, PokemonType type2, String imgUrl) {
         this.name = name;
         this.type1 = type1;
         this.type2 = type2;
+        this.imgUrl = imgUrl;
     }
 
     public int getPokemonId() {
@@ -53,4 +53,9 @@ public class Pokemon{
     public void setType2(PokemonType type2) {
         this.type2 = type2;
     }
+
+    public String getImgUrl() { return imgUrl; }
+
+    public void setImgUrl(String imgUrl) { this.imgUrl = imgUrl; }
+
 }
