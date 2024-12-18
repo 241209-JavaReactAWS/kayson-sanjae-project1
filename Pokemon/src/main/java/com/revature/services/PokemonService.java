@@ -29,7 +29,7 @@ public class PokemonService {
         return pokemonDao.findById(id);
     }
 
-    public List<Pokemon> allPokemons(){
+    public List<Pokemon> getAllPokemons(){
         return pokemonDao.findAll();
     }
 
