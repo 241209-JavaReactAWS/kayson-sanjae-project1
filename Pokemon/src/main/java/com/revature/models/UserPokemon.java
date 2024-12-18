@@ -19,27 +19,15 @@ public class UserPokemon{
 
     public UserPokemon() {}
 
-    public int getUserPokemonId() {
-        return userPokemonId;
-    }
+    public int getUserPokemonId() { return userPokemonId; }
 
-    public void setUserPokemonId(int userPokemonId) {
-        this.userPokemonId = userPokemonId;
-    }
+    public void setUserPokemonId(int userPokemonId) { this.userPokemonId = userPokemonId; }
 
-    public User getUser() {
-        return user;
-    }
+    public User getUser() { return user; }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public void setUser(User user) { this.user = user; }
 
-    public Pokemon getPokemon() {
-        return pokemon;
-    }
+    public Pokemon getPokemon() { return pokemon;}
 
-    public void setPokemon(Pokemon pokemon) {
-        this.pokemon = pokemon;
-    }
+    public void setPokemon(Pokemon pokemon) { this.pokemon = pokemon; }
 }

@@ -16,7 +16,6 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-
     public User saveUser(User user){
         return userDAO.save(user);
     }

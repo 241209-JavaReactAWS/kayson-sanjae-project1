@@ -32,6 +32,4 @@ public class PokemonService {
     public List<Pokemon> getAllPokemons(){
         return pokemonDao.findAll();
     }
-
-
 }
