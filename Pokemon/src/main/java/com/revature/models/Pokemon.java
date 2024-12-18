@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 @Table(name="pokemons")
 public class Pokemon{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pokemonId;
+    @Column(unique = true)
     private String name;
     @Enumerated(EnumType.STRING)
     private PokemonType type1;
