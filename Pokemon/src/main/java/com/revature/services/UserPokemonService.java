@@ -16,18 +16,18 @@ public class UserPokemonService {
         this.userPokemonDAO = userPokemonDAO;
     }
 
-    public Optional<Pokemon> getPokemonByUserIdAndName(int userId, String name){
+    public Optional<Pokemon> getPokemonByName(int userId, String name){
         return userPokemonDAO.findPokemonByName(userId, name);
     }
 
-    public Set<Pokemon> getFilterPokemons(int userId, List<String> types, int isAcquired){
+    public Set<Pokemon> getFilterPokemons(int userId, List<String> types, int status) {
         Set<Pokemon> set = new HashSet<>();
-        if (isAcquired == 0) {
+        if (status == 0) {
             set.addAll(userPokemonDAO.findAcquired(userId));
             set.addAll(userPokemonDAO.findUnacquired(userId));
-        } else if (isAcquired == 1) {
+        } else if (status == 1) {
             set.addAll(userPokemonDAO.findAcquired(userId));
-        } else if (isAcquired == 2) {
+        } else if (status == 2) {
             set.addAll(userPokemonDAO.findUnacquired(userId));
         }
 
