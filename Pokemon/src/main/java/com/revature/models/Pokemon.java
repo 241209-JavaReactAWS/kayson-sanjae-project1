@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name="pokemons")
 public class Pokemon{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pokemonId;
     private String name;
     @Enumerated(EnumType.STRING)
@@ -14,15 +13,9 @@ public class Pokemon{
     @Enumerated(EnumType.STRING)
     private PokemonType type2;
     private String imgUrl;
+    private int cost;
 
     public Pokemon(){}
-
-    public Pokemon(String name, PokemonType type1, PokemonType type2, String imgUrl) {
-        this.name = name;
-        this.type1 = type1;
-        this.type2 = type2;
-        this.imgUrl = imgUrl;
-    }
 
     public int getPokemonId() {
         return pokemonId;
@@ -60,4 +53,7 @@ public class Pokemon{
 
     public void setImgUrl(String imgUrl) { this.imgUrl = imgUrl; }
 
+    public int getCost() { return cost; }
+
+    public void setCost(int cost) { this.cost = cost; }
 }

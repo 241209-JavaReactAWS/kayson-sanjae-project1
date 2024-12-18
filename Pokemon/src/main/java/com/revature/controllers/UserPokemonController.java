@@ -3,7 +3,6 @@ package com.revature.controllers;
 import com.revature.models.Pokemon;
 import com.revature.services.UserPokemonService;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
