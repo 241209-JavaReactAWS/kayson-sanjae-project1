@@ -25,11 +25,15 @@ public class PokemonService {
         return pokemonDao.findByName(name);
     }
 
-    public Optional<Pokemon> findUserById(int id){
+    public Optional<Pokemon> findPokemonById(int id){
         return pokemonDao.findById(id);
     }
 
     public List<Pokemon> getAllPokemons(){
         return pokemonDao.findAll();
+    }
+
+    public void deletePokemon(int id){
+        pokemonDao.deleteById(id);
     }
 }
