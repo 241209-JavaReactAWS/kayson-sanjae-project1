@@ -1,6 +1,9 @@
 package com.revature.services;
 
 import com.revature.daos.UserDAO;
+import com.revature.exceptions.InvalidCredentialsException;
+import com.revature.exceptions.UserExistsException;
+import com.revature.exceptions.UserNotFoundException;
 import com.revature.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +19,41 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public User saveUser(User user){
+    public User registerUser(User user) throws UserExistsException {
+        Optional<User> optionalUser = userDAO.findByUsername(user.getUsername());
+        if(optionalUser.isPresent()){
+            throw new UserExistsException();
+        }
+
+        // todo: password specifications
+
         return userDAO.save(user);
     }
 
-    public Optional<User> findUserByUsername(String username){
-        return userDAO.findByUsername(username);
+    public User loginUser(User user) throws InvalidCredentialsException {
+        Optional<User> optionalUser = userDAO.findByCredentials(user.getUsername(), user.getPassword());
+        if(optionalUser.isEmpty()){
+            throw new InvalidCredentialsException();
+        }
+        return optionalUser.get();
     }
 
-    public Optional<User> findUserById(int id){
-        return userDAO.findById(id);
+    public User findUserByUsername(String username) throws UserNotFoundException {
+        // this may not be needed
+        Optional<User> optionalUser = userDAO.findByUsername(username);
+        if(optionalUser.isEmpty()){
+            throw new UserNotFoundException();
+        }
+        return optionalUser.get();
+    }
+
+    public User findUserById(int id) throws UserNotFoundException {
+        Optional<User> optionalUser = userDAO.findById(id);
+        if(optionalUser.isEmpty()){
+            throw new UserNotFoundException();
+        }
+
+        return optionalUser.get();
     }
 
     public List<User> allUsers(){
