@@ -13,6 +13,6 @@ public interface PokemonDao extends JpaRepository<Pokemon, Integer> {
 
     Optional<Pokemon> findByName(String name);
 
-    @Query("select top 5 from Pokemons order by rand()")
+    @Query(value = "select * from pokemons order by rand() limit 5", nativeQuery = true)
     List<Pokemon> findFiveRandom();
 }

@@ -8,6 +8,7 @@ import com.revature.models.UserShop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,14 @@ public class UserShopService {
         return userShopDAO.findByUserId(userId);
     }
 
-    public List<Pokemon> getUserShopPokemons(int userId){
-        return userShopDAO.findUserShopPokemonsByUserId(userId);
+    public List<Pokemon> getUserShopPokemons(int userId) throws UserNotFoundException {
+        Optional<UserShop> optionalUserShop = getUserShop(userId);
+        if(optionalUserShop.isEmpty()){
+            throw new UserNotFoundException();
+        }
+
+        UserShop userShop = optionalUserShop.get();
+        return  userShop.getAllPokemon();
     }
 
     public UserShop updateUserShop(int userId) throws UserNotFoundException {

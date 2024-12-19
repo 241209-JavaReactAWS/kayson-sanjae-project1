@@ -2,6 +2,9 @@ package com.revature.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class UserShop {
     @Id
@@ -12,34 +15,27 @@ public class UserShop {
     @JoinColumn(name = "userId", insertable = false, updatable = false)
     private User user;
 
-    private int pokemon1Id;
-    private int pokemon2Id;
-    private int pokemon3Id;
-    private int pokemon4Id;
-    private int pokemon5Id;
-
     @ManyToOne
-    @JoinColumn(name = "pokemon1Id", insertable = false, updatable = false)
+    @JoinColumn(name = "pokemon1_id")
     private Pokemon pokemon1;
 
     @ManyToOne
-    @JoinColumn(name = "pokemon2Id", insertable = false, updatable = false)
+    @JoinColumn(name = "pokemon2_id")
     private Pokemon pokemon2;
 
     @ManyToOne
-    @JoinColumn(name = "pokemon3Id", insertable = false, updatable = false)
+    @JoinColumn(name = "pokemon3_id")
     private Pokemon pokemon3;
 
     @ManyToOne
-    @JoinColumn(name = "pokemon4Id", insertable = false, updatable = false)
+    @JoinColumn(name = "pokemon4_id")
     private Pokemon pokemon4;
 
     @ManyToOne
-    @JoinColumn(name = "pokemon5Id", insertable = false, updatable = false)
+    @JoinColumn(name = "pokemon5_id")
     private Pokemon pokemon5;
 
-    public UserShop() {
-    }
+    public UserShop() {}
 
     public int getUserShopId() {
         return userShopId;
@@ -63,46 +59,6 @@ public class UserShop {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public int getPokemon1Id() {
-        return pokemon1Id;
-    }
-
-    public void setPokemon1Id(int pokemon1Id) {
-        this.pokemon1Id = pokemon1Id;
-    }
-
-    public int getPokemon2Id() {
-        return pokemon2Id;
-    }
-
-    public void setPokemon2Id(int pokemon2Id) {
-        this.pokemon2Id = pokemon2Id;
-    }
-
-    public int getPokemon3Id() {
-        return pokemon3Id;
-    }
-
-    public void setPokemon3Id(int pokemon3Id) {
-        this.pokemon3Id = pokemon3Id;
-    }
-
-    public int getPokemon4Id() {
-        return pokemon4Id;
-    }
-
-    public void setPokemon4Id(int pokemon4Id) {
-        this.pokemon4Id = pokemon4Id;
-    }
-
-    public int getPokemon5Id() {
-        return pokemon5Id;
-    }
-
-    public void setPokemon5Id(int pokemon5Id) {
-        this.pokemon5Id = pokemon5Id;
     }
 
     public Pokemon getPokemon1() {
@@ -143,5 +99,15 @@ public class UserShop {
 
     public void setPokemon5(Pokemon pokemon5) {
         this.pokemon5 = pokemon5;
+    }
+
+    public List<Pokemon> getAllPokemon(){
+        List<Pokemon> pokemons = new ArrayList<>();
+        pokemons.add(pokemon1);
+        pokemons.add(pokemon2);
+        pokemons.add(pokemon3);
+        pokemons.add(pokemon4);
+        pokemons.add(pokemon5);
+        return pokemons;
     }
 }
