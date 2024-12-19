@@ -4,32 +4,19 @@ import './App.css'
 import Nav from './components/nav/Nav'
 import {User} from './interfaces/user'
 import Pokemon_m from './components/Pokemon_m/Pokemon_m'
-<<<<<<< HEAD
-import Collection from './components/collection/Collection'
-import { createContext } from "react";
-
-export interface AuthContextType{
-  userId: number,
-=======
 import Login from './components/login/login'
 import { createContext, useEffect, useState } from 'react'
 import axios from 'axios'
 
 export interface AuthContextType{
->>>>>>> fc3e313bdca037fc5ebbf03641b6aaafb2e7c3c7
   username: string,
   setUsername: (username: string) => void,
   role: "unauthenticated" | "USER" | "ADMIN",
   setRole: (role: "unauthenticated" | "USER" | "ADMIN") => void
 }
-<<<<<<< HEAD
-
-export const authContext = createContext<AuthContextType | null>(null);
-=======
 export const authContext = createContext<AuthContextType | null>(null);
 
 
->>>>>>> fc3e313bdca037fc5ebbf03641b6aaafb2e7c3c7
 
 function App() {
   const [username, setUsername] = useState<string>('')
@@ -50,17 +37,6 @@ function App() {
   }, [])
 
   return (
-<<<<<<< HEAD
-    <>
-    <Collection/>
-    </>
-  )
-}
-
-export default App
-/**
- * <>
-=======
     <authContext.Provider value={
       {
         username,
@@ -69,7 +45,6 @@ export default App
         setRole
       }
     }>
->>>>>>> fc3e313bdca037fc5ebbf03641b6aaafb2e7c3c7
       <BrowserRouter>
       <Nav />
       
@@ -83,13 +58,8 @@ export default App
       </Routes>
 
       </BrowserRouter>
-<<<<<<< HEAD
-    </>
- */
-=======
     </ authContext.Provider>
   )
 }
 
 export default App
->>>>>>> fc3e313bdca037fc5ebbf03641b6aaafb2e7c3c7
