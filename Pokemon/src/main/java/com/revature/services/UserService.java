@@ -30,8 +30,8 @@ public class UserService {
         return userDAO.save(user);
     }
 
-    public User loginUser(User user) throws InvalidCredentialsException {
-        Optional<User> optionalUser = userDAO.findByCredentials(user.getUsername(), user.getPassword());
+    public User loginUser(String username, String password) throws InvalidCredentialsException {
+        Optional<User> optionalUser = userDAO.findByCredentials(username, password);
         if(optionalUser.isEmpty()){
             throw new InvalidCredentialsException();
         }

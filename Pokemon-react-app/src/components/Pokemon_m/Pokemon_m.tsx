@@ -100,7 +100,7 @@ function Pokemon_m() {
   return (
     <div className="listContainer">
       <div id="pokemonList" className="list">
-        <h3>Pokemon List (can edit Pokemon name, price, type, and etc below)</h3>
+        <h3>Pokemon Management</h3>
         <table className="table table-hover">
           <thead>
             <tr>

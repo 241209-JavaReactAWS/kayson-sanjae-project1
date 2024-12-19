@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import com.revature.exceptions.InvalidCredentialsException;
 import com.revature.exceptions.UserExistsException;
+import com.revature.exceptions.UserNotFoundException;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -30,10 +31,20 @@ public class UserController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<User> getUserInfoHandler(HttpSession session) throws UserNotFoundException {
+        if (session.isNew() || session.getAttribute("username") == null){
+            return ResponseEntity.status(401).build();
+        }
+        User userToBeReturned = userService.findUserByUsername( (String) session.getAttribute("username"));
+
+        return ResponseEntity.ok(userToBeReturned);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<User> loginHandler(@RequestBody User user, HttpSession session) {
         try {
-            User returningUser = userService.loginUser(user);
+            User returningUser = userService.loginUser(user.getUsername(), user.getPassword());
             //todo: add a login bonus
             // if last login date is the previous day we add coins and then update last login
             session.setAttribute("username", returningUser.getUsername());
