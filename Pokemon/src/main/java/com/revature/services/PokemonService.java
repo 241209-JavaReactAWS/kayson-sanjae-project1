@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import com.revature.daos.PokemonDao;
+import com.revature.exceptions.InvalidPokemonException;
 import com.revature.exceptions.PokemonIdExistsException;
 import com.revature.exceptions.PokemonNameExistException;
 import com.revature.models.Pokemon;
@@ -28,6 +29,14 @@ public class PokemonService {
             throw new PokemonNameExistException();
         }
         return pokemonDao.save(pokemon);
+    }
+
+    public Pokemon editPokemon(Pokemon pokemon) throws InvalidPokemonException {
+        if(pokemonDao.findById(pokemon.getPokemonId()).isPresent()){
+            return pokemonDao.save(pokemon);
+        }else{
+            throw new InvalidPokemonException();
+        }
     }
 
     public Optional<Pokemon> findPokemonByName(String name){
