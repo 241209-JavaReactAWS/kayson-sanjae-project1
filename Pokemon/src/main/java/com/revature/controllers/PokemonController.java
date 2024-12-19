@@ -64,6 +64,7 @@ public class PokemonController {
 
     @PostMapping
     public ResponseEntity<Pokemon> addNewPokemon(HttpSession session, @RequestBody Pokemon pokemon){
+        //todo: no duplicated pokemon name
         Pokemon returnedPokemon = pokemonService.savePokemon(pokemon);
 
         if(returnedPokemon == null){
