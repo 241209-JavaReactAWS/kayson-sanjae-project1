@@ -73,8 +73,8 @@ public class PokemonController {
         }
     }
 
-    @PutMapping("id/{pokemonId}")
-    public ResponseEntity<Pokemon> editPokemon(HttpSession session, @RequestBody int pokemonId, Pokemon pokemon){
+    @PutMapping
+    public ResponseEntity<Pokemon> editPokemon(HttpSession session, @RequestBody Pokemon pokemon){
         try{
             Pokemon returnedPokemon = pokemonService.editPokemon(pokemon);
             return ResponseEntity.status(200).body(returnedPokemon);
