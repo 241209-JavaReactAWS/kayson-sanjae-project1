@@ -1,6 +1,8 @@
 package com.revature.services;
 
 import com.revature.daos.PokemonDao;
+import com.revature.exceptions.PokemonIdExistsException;
+import com.revature.exceptions.PokemonNameExistException;
 import com.revature.models.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,14 @@ public class PokemonService {
         this.pokemonDao = pokemonDao;
     }
 
-    public Pokemon savePokemon(Pokemon pokemon){
+    public Pokemon savePokemon(Pokemon pokemon) throws PokemonIdExistsException, PokemonNameExistException {
+        if(pokemonDao.findById(pokemon.getPokemonId()).isPresent()){
+            throw new PokemonIdExistsException();
+        }
+
+        if(pokemonDao.findByName(pokemon.getName()).isPresent()){
+            throw new PokemonNameExistException();
+        }
         return pokemonDao.save(pokemon);
     }
 

@@ -64,16 +64,12 @@ public class PokemonController {
 
     @PostMapping
     public ResponseEntity<Pokemon> addNewPokemon(HttpSession session, @RequestBody Pokemon pokemon){
-        //todo: no duplicated pokemon name
-        Pokemon returnedPokemon = pokemonService.savePokemon(pokemon);
-
-        if(returnedPokemon == null){
+        try{
+            Pokemon returnedPokemon = pokemonService.savePokemon(pokemon);
+            return ResponseEntity.status(201).body(returnedPokemon);
+        }catch(Exception e){
             return ResponseEntity.badRequest().build();
         }
-
-        return ResponseEntity.status(201).body(returnedPokemon);
     }
-
-
 
 }
