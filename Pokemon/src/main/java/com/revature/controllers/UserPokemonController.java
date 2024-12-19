@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.exceptions.UserPokemonNotFoundException;
 import com.revature.models.Pokemon;
 import com.revature.services.UserPokemonService;
 import jakarta.servlet.http.HttpSession;
@@ -11,6 +12,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("user/{userId}/pokemons")
+@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
 public class UserPokemonController {
     private final UserPokemonService userPokemonService;
 
@@ -25,10 +27,12 @@ public class UserPokemonController {
             return ResponseEntity.badRequest().build();
         }
 
-
-        Optional<Pokemon> optionalPokemon = userPokemonService.getPokemonByName(userId, pokemonName);
-        return optionalPokemon.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(404).build());
-
+        try{
+            Pokemon pokemon = userPokemonService.getPokemonByName(userId, pokemonName);
+            return ResponseEntity.ok(pokemon);
+        }catch(UserPokemonNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping(params = {"types", "status"})

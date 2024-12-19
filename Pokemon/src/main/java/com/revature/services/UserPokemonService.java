@@ -1,7 +1,9 @@
 package com.revature.services;
 
 import com.revature.daos.UserPokemonDAO;
+import com.revature.exceptions.UserPokemonNotFoundException;
 import com.revature.models.Pokemon;
+import com.revature.models.UserPokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,12 @@ public class UserPokemonService {
         this.userPokemonDAO = userPokemonDAO;
     }
 
-    public Optional<Pokemon> getPokemonByName(int userId, String name){
-        return userPokemonDAO.findPokemonByName(userId, name);
+    public Pokemon getPokemonByName(int userId, String name) throws UserPokemonNotFoundException {
+        Optional<Pokemon> optionalUserPokemon = userPokemonDAO.findPokemonByName(userId, name);
+        if(optionalUserPokemon.isEmpty()){
+            throw new UserPokemonNotFoundException();
+        }
+        return optionalUserPokemon.get();
     }
 
     public Set<Pokemon> getFilterPokemons(int userId, List<String> types, int status) {

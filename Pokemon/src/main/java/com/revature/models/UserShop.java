@@ -110,4 +110,12 @@ public class UserShop {
         pokemons.add(pokemon5);
         return pokemons;
     }
+
+    public void setAllPokemon(List<Pokemon> pokemons){
+        this.pokemon1 = pokemons.get(0);
+        this.pokemon2 = pokemons.get(1);
+        this.pokemon3 = pokemons.get(2);
+        this.pokemon4 = pokemons.get(3);
+        this.pokemon5 = pokemons.get(4);
+    }
 }
