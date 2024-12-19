@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/pokemons")
+@CrossOrigin(origins = "http://localhost:5174", allowCredentials = "true")
 public class PokemonController {
     private final PokemonService pokemonService;
     @Autowired

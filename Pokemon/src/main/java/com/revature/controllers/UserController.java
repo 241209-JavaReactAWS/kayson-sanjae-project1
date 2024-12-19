@@ -2,7 +2,6 @@ package com.revature.controllers;
 
 import com.revature.exceptions.InvalidCredentialsException;
 import com.revature.exceptions.UserExistsException;
-import com.revature.models.Pokemon;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
+@CrossOrigin(origins = "http://localhost:5174", allowCredentials = "true")
 public class UserController {
     private final UserService userService;
 
