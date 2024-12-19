@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("user/{userId}/pokemons")
+@RequestMapping("users/{userId}/pokemons")
 @CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
 public class UserPokemonController {
     private final UserPokemonService userPokemonService;
@@ -45,6 +45,11 @@ public class UserPokemonController {
         }
 
         int statusInt = mapStatusToInt(status);
+
+        if(statusInt == -1){
+            return ResponseEntity.internalServerError().build();
+        }
+
         List<Pokemon> pokemons = new ArrayList<>(userPokemonService.getFilterPokemons(userId, types, statusInt));
         pokemons.sort(Comparator.comparingInt(Pokemon::getPokemonId));
         return ResponseEntity.ok(pokemons);
