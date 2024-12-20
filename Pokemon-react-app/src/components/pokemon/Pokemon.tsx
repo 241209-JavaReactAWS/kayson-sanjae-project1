@@ -1,15 +1,4 @@
-export interface PokemonProps{
-    id: number,
-    name: string,
-    type1: string,
-    type2: string,
-    imgUrl: string,
-    cost: number,
-    variant?: "management" | "shop" | "collection",
-
-    owned?: boolean
-
-}
+import { PokemonProps } from "../../interfaces/pokemonProps";
 
 function Pokemon(props: PokemonProps){
     if(props.variant === "management"){
@@ -21,7 +10,12 @@ function Pokemon(props: PokemonProps){
     }
 
     if(props.variant === "collection"){
-        return null;
+        return (
+            <>
+            <img src={props.imgUrl} className="pokemonCard"/>
+            <h5>{props.name}</h5>
+            </>
+        );
     }
 }
 

@@ -6,9 +6,7 @@ function CollectionPokemons({pokemonPropsList}: PokemonPropsList) {
   return (
   <>
     {pokemonPropsList.map((pokemon) =>
-      <Pokemon
-      key={pokemon.id}
-      {...pokemon}/>
+      <Pokemon key={pokemon.id} {...pokemon}/>
     )}
   </>
   );
