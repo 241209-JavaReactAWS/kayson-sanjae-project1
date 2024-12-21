@@ -7,8 +7,11 @@ import com.revature.models.User;
 import com.revature.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -31,22 +34,40 @@ public class UserController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<User> getUserInfoHandler(HttpSession session) throws UserNotFoundException {
+    @GetMapping()
+    public ResponseEntity<User> getUserInfoHandler(HttpSession session) {
+        if (session.isNew() || session.getAttribute("userId") == null){
+            return ResponseEntity.status(401).build();
+        }
+        
+        try{
+            User userToBeReturned = userService.getUserById((int)session.getAttribute("userId"));
+            return ResponseEntity.status(302).header("Location", "/" + userToBeReturned.getUserId())
+                    .body(userToBeReturned);
+        }catch (UserNotFoundException e){
+            return ResponseEntity.status(404).build();
+        }
+    }
+
+    @GetMapping()
+    public ResponseEntity<User> getUserByUserName(HttpSession session) {
         if (session.isNew() || session.getAttribute("username") == null){
             return ResponseEntity.status(401).build();
         }
-        User userToBeReturned = userService.findUserByUsername( (String) session.getAttribute("username"));
 
-        return ResponseEntity.ok(userToBeReturned);
+        try{
+            User userToBeReturned = userService.getUserById((int)session.getAttribute("username"));
+            return ResponseEntity.status(302).header("Location", "/" + userToBeReturned.getUserId())
+                    .body(userToBeReturned);
+        }catch(UserNotFoundException e){
+            return ResponseEntity.status(404).build();
+        }
     }
 
     @PostMapping("/login")
     public ResponseEntity<User> loginHandler(@RequestBody User user, HttpSession session) {
         try {
             User returningUser = userService.loginUser(user.getUsername(), user.getPassword());
-            //todo: add a login bonus
-            // if last login date is the previous day we add coins and then update last login
             session.setAttribute("username", returningUser.getUsername());
             session.setAttribute("userId", returningUser.getUserId());
             session.setAttribute("role", returningUser.getRole());
@@ -60,6 +81,15 @@ public class UserController {
     public ResponseEntity<?> logoutHandler(HttpSession session){
         session.invalidate();
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<User>> getALlUser(HttpSession session){
+        if (session.isNew() || session.getAttribute("username") == null){
+            return ResponseEntity.status(401).build();
+        }
+        List<User> users = userService.allUsers();
+        return ResponseEntity.ok(users);
     }
 }
 

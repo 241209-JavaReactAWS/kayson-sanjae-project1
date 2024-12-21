@@ -40,7 +40,7 @@ public class PokemonController {
         try{
             Pokemon pokemon = pokemonService.getPokemonByName(name);
             return ResponseEntity.status(302).header("Location", "/" + pokemon.getPokemonId())
-                    .build();
+                    .body(pokemon);
         }catch (InvalidPokemonException e){
             return ResponseEntity.status(404).build();
         }

@@ -24,9 +24,7 @@ public class UserService {
         if(optionalUser.isPresent()){
             throw new UserExistsException();
         }
-
         // todo: password specifications
-
         return userDAO.save(user);
     }
 
@@ -38,8 +36,7 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public User findUserByUsername(String username) throws UserNotFoundException {
-        // this may not be needed
+    public User getUserByUsername(String username) throws UserNotFoundException {
         Optional<User> optionalUser = userDAO.findByUsername(username);
         if(optionalUser.isEmpty()){
             throw new UserNotFoundException();
@@ -47,12 +44,11 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public User findUserById(int id) throws UserNotFoundException {
+    public User getUserById(int id) throws UserNotFoundException {
         Optional<User> optionalUser = userDAO.findById(id);
         if(optionalUser.isEmpty()){
             throw new UserNotFoundException();
         }
-
         return optionalUser.get();
     }
 
