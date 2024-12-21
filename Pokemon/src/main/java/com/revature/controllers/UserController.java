@@ -33,7 +33,7 @@ public class UserController {
         }
     }
 
-    @GetMapping()
+    @GetMapping("/id")
     public ResponseEntity<User> getUserInfoHandler(HttpSession session) {
         if (session.isNew() || session.getAttribute("userId") == null){
             return ResponseEntity.status(401).build();
@@ -48,7 +48,7 @@ public class UserController {
         }
     }
 
-    @GetMapping()
+    @GetMapping("/username")
     public ResponseEntity<User> getUserByUserName(HttpSession session) {
         if (session.isNew() || session.getAttribute("username") == null){
             return ResponseEntity.status(401).build();

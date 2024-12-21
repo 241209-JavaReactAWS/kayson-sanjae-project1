@@ -26,7 +26,7 @@ public class PokemonController {
         return pokemonService.getAllPokemons();
     }
 
-    @GetMapping("/{pokemonId}")
+    @GetMapping("/id/{pokemonId}")
     public ResponseEntity<Pokemon> getPokemonById(@PathVariable int pokemonId){
         try{
             Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
@@ -36,23 +36,17 @@ public class PokemonController {
         }
     }
 
-    @GetMapping()
-    public ResponseEntity<Pokemon> getPokemonByName(@RequestParam String name){
+    @GetMapping("name/{name}")
+    public ResponseEntity<Pokemon> getPokemonByName(@PathVariable String name){
         try{
             Pokemon pokemon = pokemonService.getPokemonByName(name);
-            return ResponseEntity.status(302).header("Location", "/" + pokemon.getPokemonId())
-                    .body(pokemon);
+            return ResponseEntity.ok(pokemon);
         }catch (PokemonNotFoundException e){
             return ResponseEntity.status(404).build();
         }
     }
 
-    @GetMapping()
-    public ResponseEntity<List<Pokemon>> getAllPokemon(){
-        return ResponseEntity.ok(pokemonService.getAllPokemons());
-    }
-
-    @DeleteMapping("/{pokemonId}")
+    @DeleteMapping("/id/{pokemonId}")
     public ResponseEntity<?> deletePokemonById(@PathVariable int pokemonId){
         try{
             Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
@@ -62,7 +56,7 @@ public class PokemonController {
     }
 
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<Pokemon> addNewPokemon(HttpSession session, @RequestBody Pokemon pokemon){
         try{
             Pokemon returnedPokemon = pokemonService.savePokemon(pokemon);
