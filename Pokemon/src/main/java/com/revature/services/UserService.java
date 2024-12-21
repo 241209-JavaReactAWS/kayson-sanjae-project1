@@ -1,9 +1,9 @@
 package com.revature.services;
 
 import com.revature.daos.UserDAO;
-import com.revature.exceptions.InvalidCredentialsException;
-import com.revature.exceptions.UserExistsException;
-import com.revature.exceptions.UserNotFoundException;
+import com.revature.exceptions.user.InvalidCredentialsException;
+import com.revature.exceptions.user.UserExistsException;
+import com.revature.exceptions.user.UserNotFoundException;
 import com.revature.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

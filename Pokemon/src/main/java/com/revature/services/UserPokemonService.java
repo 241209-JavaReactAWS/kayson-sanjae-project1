@@ -1,8 +1,12 @@
 package com.revature.services;
 
 import com.revature.daos.UserPokemonDAO;
-import com.revature.exceptions.UserPokemonNotFoundException;
+import com.revature.exceptions.pokemon.InvalidPokemonException;
+import com.revature.exceptions.pokemon.PokemonNotFoundException;
+import com.revature.exceptions.user.UserNotFoundException;
+import com.revature.exceptions.user_shop.UserPokemonNotFoundException;
 import com.revature.models.Pokemon;
+import com.revature.models.User;
 import com.revature.models.UserPokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,22 +16,34 @@ import java.util.*;
 @Service
 public class UserPokemonService {
     private final UserPokemonDAO userPokemonDAO;
+    private final UserService userService;
+    private final PokemonService pokemonService;
 
     @Autowired
-    public UserPokemonService(UserPokemonDAO userPokemonDAO) {
+    public UserPokemonService(UserPokemonDAO userPokemonDAO, UserService userService, PokemonService pokemonService) {
         this.userPokemonDAO = userPokemonDAO;
+        this.userService = userService;
+        this.pokemonService = pokemonService;
     }
 
-    public Pokemon getPokemonByName(int userId, String name) throws UserPokemonNotFoundException {
-        Optional<Pokemon> optionalUserPokemon = userPokemonDAO.findPokemonByName(userId, name);
-        if(optionalUserPokemon.isEmpty()){
-            throw new UserPokemonNotFoundException();
-        }
-        return optionalUserPokemon.get();
+    public UserPokemon addUserPokemon(int userId, int pokemonId) throws UserNotFoundException, PokemonNotFoundException {
+        User user = userService.getUserById(userId);
+        Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
+
+        UserPokemon userPokemon = new UserPokemon();
+        userPokemon.setUser(user);
+        userPokemon.setPokemon(pokemon);
+        return userPokemonDAO.save(userPokemon);
     }
 
-    public Set<Pokemon> getFilterPokemons(int userId, List<String> types, int status) {
+    public Set<Pokemon> getFilterPokemons(int userId, String pokemonName, List<String> types, int status) throws PokemonNotFoundException {
         Set<Pokemon> set = new HashSet<>();
+
+        if(!pokemonName.isEmpty()){
+            set.add(pokemonService.getPokemonByName(pokemonName));
+            return set;
+        }
+
         if (status == 0) {
             set.addAll(userPokemonDAO.findAcquired(userId));
             set.addAll(userPokemonDAO.findUnacquired(userId));
@@ -37,12 +53,7 @@ public class UserPokemonService {
             set.addAll(userPokemonDAO.findUnacquired(userId));
         }
 
-        Set<Pokemon> unionOfTypes = new HashSet<>();
-        for(String type : types){
-            unionOfTypes.addAll(userPokemonDAO.findByType(type));
-        }
-
-        set.retainAll(unionOfTypes);
+        set.retainAll(pokemonService.getPokemonByTypes(types));
         return set;
     }
 

@@ -1,9 +1,10 @@
 package com.revature.services;
 
 import com.revature.daos.PokemonDao;
-import com.revature.exceptions.InvalidPokemonException;
-import com.revature.exceptions.PokemonIdExistsException;
-import com.revature.exceptions.PokemonNameExistException;
+import com.revature.exceptions.pokemon.InvalidPokemonException;
+import com.revature.exceptions.pokemon.PokemonIdExistsException;
+import com.revature.exceptions.pokemon.PokemonNameExistException;
+import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.models.Pokemon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,10 +38,10 @@ public class PokemonService {
         return pokemonDao.save(pokemon);
     }
 
-    public Pokemon getPokemonById(int id) throws InvalidPokemonException {
+    public Pokemon getPokemonById(int id) throws PokemonNotFoundException {
         Optional<Pokemon> optionalPokemon = pokemonDao.findById(id);
         if(optionalPokemon.isEmpty()){
-            throw new InvalidPokemonException();
+            throw new PokemonNotFoundException();
         }
         return optionalPokemon.get();
     }
@@ -53,20 +54,25 @@ public class PokemonService {
         pokemonDao.deleteById(id);
     }
 
-    public Pokemon editPokemon(Pokemon pokemon) throws InvalidPokemonException {
-        if(pokemon == null || pokemonDao.findById(pokemon.getPokemonId()).isEmpty()){
+    public Pokemon editPokemon(Pokemon pokemon) throws InvalidPokemonException, PokemonNotFoundException {
+        if(pokemon == null){
             throw new InvalidPokemonException();
+        }
+
+        if(pokemonDao.findById(pokemon.getPokemonId()).isEmpty()){
+            throw new PokemonNotFoundException();
         }
         return pokemonDao.save(pokemon);
     }
 
-    public Pokemon getPokemonByName(String name) throws InvalidPokemonException {
+    public Pokemon getPokemonByName(String name) throws PokemonNotFoundException {
         Optional<Pokemon> optionalPokemon = pokemonDao.findByName(name);
         if(optionalPokemon.isEmpty()){
-            throw new InvalidPokemonException();
+            throw new PokemonNotFoundException();
         }
         return optionalPokemon.get();
     }
+
 
     public Set<Pokemon> getFiveRandom(){
         return pokemonDao.findFiveRandom();
@@ -78,7 +84,6 @@ public class PokemonService {
         for(String type : types){
             set.addAll(pokemonDao.findByType(type));
         }
-
         return set;
     }
 }

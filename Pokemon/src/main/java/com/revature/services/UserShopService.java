@@ -2,7 +2,7 @@ package com.revature.services;
 
 import com.revature.daos.PokemonDao;
 import com.revature.daos.UserShopDAO;
-import com.revature.exceptions.UserNotFoundException;
+import com.revature.exceptions.user.UserNotFoundException;
 import com.revature.models.Pokemon;
 import com.revature.models.UserShop;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +36,11 @@ public class UserShopService {
 
     public UserShop updateUserShop(int userId) throws UserNotFoundException {
         UserShop userShop = getUserShop(userId);
+        /*
         List<Pokemon> pokemons = pokemonDao.findFiveRandom();
         userShop.setAllPokemon(pokemons);
         userShopDAO.save(userShop);
+        */
         return userShop;
     }
 }

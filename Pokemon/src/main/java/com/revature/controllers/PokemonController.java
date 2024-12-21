@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
-import com.revature.exceptions.InvalidPokemonException;
+import com.revature.exceptions.pokemon.InvalidPokemonException;
+import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.models.Pokemon;
 import com.revature.services.PokemonService;
 import jakarta.servlet.http.HttpSession;
@@ -30,7 +31,7 @@ public class PokemonController {
         try{
             Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
             return ResponseEntity.ok(pokemon);
-        }catch(InvalidPokemonException e){
+        }catch(PokemonNotFoundException e){
             return ResponseEntity.status(404).build();
         }
     }
@@ -41,7 +42,7 @@ public class PokemonController {
             Pokemon pokemon = pokemonService.getPokemonByName(name);
             return ResponseEntity.status(302).header("Location", "/" + pokemon.getPokemonId())
                     .body(pokemon);
-        }catch (InvalidPokemonException e){
+        }catch (PokemonNotFoundException e){
             return ResponseEntity.status(404).build();
         }
     }
@@ -56,7 +57,7 @@ public class PokemonController {
         try{
             Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
             pokemonService.deletePokemon(pokemonId);
-        }catch (InvalidPokemonException e){}
+        }catch (PokemonNotFoundException e){}
         return ResponseEntity.noContent().build();
     }
 

@@ -1,4 +1,4 @@
-package com.revature.exceptions;
+package com.revature.exceptions.pokemon;
 
 public class PokemonNameExistException extends Exception {
 }

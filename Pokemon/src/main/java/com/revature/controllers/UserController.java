@@ -1,13 +1,12 @@
 package com.revature.controllers;
 
-import com.revature.exceptions.InvalidCredentialsException;
-import com.revature.exceptions.UserExistsException;
-import com.revature.exceptions.UserNotFoundException;
+import com.revature.exceptions.user.InvalidCredentialsException;
+import com.revature.exceptions.user.UserExistsException;
+import com.revature.exceptions.user.UserNotFoundException;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +38,7 @@ public class UserController {
         if (session.isNew() || session.getAttribute("userId") == null){
             return ResponseEntity.status(401).build();
         }
-        
+
         try{
             User userToBeReturned = userService.getUserById((int)session.getAttribute("userId"));
             return ResponseEntity.status(302).header("Location", "/" + userToBeReturned.getUserId())
