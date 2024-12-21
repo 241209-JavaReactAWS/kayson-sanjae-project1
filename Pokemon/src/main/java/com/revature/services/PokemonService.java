@@ -6,6 +6,7 @@ import com.revature.exceptions.pokemon.PokemonIdExistsException;
 import com.revature.exceptions.pokemon.PokemonNameExistException;
 import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.models.Pokemon;
+import com.revature.models.PokemonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,10 +76,10 @@ public class PokemonService {
         return pokemonDao.findFiveRandom();
     }
 
-    public Set<Pokemon> getPokemonByTypes(List<String> types){
+    public Set<Pokemon> getPokemonByTypes(List<PokemonType> types){
         Set<Pokemon> set = new HashSet<>();
 
-        for(String type : types){
+        for(PokemonType type : types){
             set.addAll(pokemonDao.findByType(type));
         }
         return set;

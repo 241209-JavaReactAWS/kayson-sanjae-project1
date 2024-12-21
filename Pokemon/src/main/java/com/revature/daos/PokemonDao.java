@@ -1,6 +1,7 @@
 package com.revature.daos;
 
 import com.revature.models.Pokemon;
+import com.revature.models.PokemonType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +20,5 @@ public interface PokemonDao extends JpaRepository<Pokemon, Integer> {
     Set<Pokemon> findFiveRandom();
 
     @Query("from Pokemon p where p.type1 = :type or p.type2 = :type")
-    Set<Pokemon> findByType(@Param("type") String type);
+    Set<Pokemon> findByType(@Param("type") PokemonType type);
 }

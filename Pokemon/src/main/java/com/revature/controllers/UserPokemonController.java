@@ -3,6 +3,7 @@ package com.revature.controllers;
 import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.exceptions.user.UserNotFoundException;
 import com.revature.models.Pokemon;
+import com.revature.models.PokemonType;
 import com.revature.models.UserPokemon;
 import com.revature.services.UserPokemonService;
 import jakarta.servlet.http.HttpSession;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("users/pokemons")
-@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
+@RequestMapping("/users/pokemons")
+@CrossOrigin(origins = "http://localhost:5174", allowCredentials = "true")
 public class UserPokemonController {
     private final UserPokemonService userPokemonService;
 
@@ -24,8 +25,8 @@ public class UserPokemonController {
     }
 
     @PostMapping()
-    public ResponseEntity<UserPokemon> addUserPokemon(HttpSession session, @PathVariable("pokemonId") int pokemonId){
-        if(session.isNew() || session.getAttribute("username") == null){
+    public ResponseEntity<UserPokemon> addUserPokemon(HttpSession session, @RequestParam int pokemonId){
+        if(session.isNew() || session.getAttribute("userId") == null){
             return ResponseEntity.badRequest().build();
         }
 
@@ -37,20 +38,18 @@ public class UserPokemonController {
         }
     }
 
-    @GetMapping(params = {"name", "types", "status"})
+    @GetMapping()
     public ResponseEntity<List<Pokemon>> getPokemonsByFilters(HttpSession session,
-                                                              @RequestParam("name") String pokemonName,
-                                                              @RequestParam("types") List<String> types,
-                                                              @RequestParam("status") String status){
+                                                              @RequestParam(value = "name", required = false) String pokemonName,
+                                                              @RequestParam(value = "types", required = false) List<PokemonType> types,
+                                                              @RequestParam(value = "status", required = false) String status){
         if(session.isNew() || session.getAttribute("username") == null){
             return ResponseEntity.badRequest().build();
         }
 
+        pokemonName = pokemonName == null ? "" : pokemonName.toLowerCase();
+        types = types == null ? Collections.emptyList() : types;
         int statusInt = mapStatusToInt(status);
-
-        if(statusInt == -1){
-            return ResponseEntity.internalServerError().build();
-        }
 
         try{
             List<Pokemon> pokemons = new ArrayList<>(userPokemonService.
@@ -64,11 +63,11 @@ public class UserPokemonController {
     }
 
     private int mapStatusToInt(String status){
+        if(status == null) { return 2;}
         return switch (status.toLowerCase()) {
             case "acquired" -> 0;
             case "unacquired" -> 1;
-            case "acquired&unacquired" -> 2;
-            default -> -1;
+            default -> 2;
         };
     }
 }

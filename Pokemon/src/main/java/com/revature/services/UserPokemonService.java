@@ -4,6 +4,7 @@ import com.revature.daos.UserPokemonDAO;
 import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.exceptions.user.UserNotFoundException;
 import com.revature.models.Pokemon;
+import com.revature.models.PokemonType;
 import com.revature.models.User;
 import com.revature.models.UserPokemon;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UserPokemonService {
         return userPokemonDAO.save(userPokemon);
     }
 
-    public Set<Pokemon> getFilterPokemons(int userId, String pokemonName, List<String> types, int status) throws PokemonNotFoundException {
+    public Set<Pokemon> getFilterPokemons(int userId, String pokemonName, List<PokemonType> types, int status) throws PokemonNotFoundException {
         Set<Pokemon> set = new HashSet<>();
 
         if(!pokemonName.isEmpty()){
@@ -42,16 +43,18 @@ public class UserPokemonService {
             return set;
         }
 
-        if (status == 0) {
+        if (status == 2) {
             set.addAll(userPokemonDAO.findAcquired(userId));
             set.addAll(userPokemonDAO.findUnacquired(userId));
-        } else if (status == 1) {
+        } else if (status == 0) {
             set.addAll(userPokemonDAO.findAcquired(userId));
-        } else if (status == 2) {
+        } else if (status == 1) {
             set.addAll(userPokemonDAO.findUnacquired(userId));
         }
 
-        set.retainAll(pokemonService.getPokemonByTypes(types));
+        if(!types.isEmpty()){
+            set.retainAll(pokemonService.getPokemonByTypes(types));
+        }
         return set;
     }
 
