@@ -8,8 +8,8 @@ import com.revature.models.UserShop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserShopService {
@@ -30,17 +30,15 @@ public class UserShopService {
         return optionalUserShop.get();
     }
 
-    public List<Pokemon> getUserShopPokemons(int userId) throws UserNotFoundException {
+    public Set<Pokemon> getUserShopPokemons(int userId) throws UserNotFoundException {
         return getUserShop(userId).getAllPokemon();
     }
 
     public UserShop updateUserShop(int userId) throws UserNotFoundException {
         UserShop userShop = getUserShop(userId);
-        /*
-        List<Pokemon> pokemons = pokemonDao.findFiveRandom();
+        Set<Pokemon> pokemons = pokemonDao.findFiveRandom();
         userShop.setAllPokemon(pokemons);
         userShopDAO.save(userShop);
-        */
         return userShop;
     }
 }

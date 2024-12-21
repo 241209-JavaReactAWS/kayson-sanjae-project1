@@ -3,7 +3,9 @@ package com.revature.models;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class UserShop {
@@ -101,8 +103,8 @@ public class UserShop {
         this.pokemon5 = pokemon5;
     }
 
-    public List<Pokemon> getAllPokemon(){
-        List<Pokemon> pokemons = new ArrayList<>();
+    public Set<Pokemon> getAllPokemon(){
+        Set<Pokemon> pokemons = new HashSet<>();
         pokemons.add(pokemon1);
         pokemons.add(pokemon2);
         pokemons.add(pokemon3);
@@ -111,7 +113,8 @@ public class UserShop {
         return pokemons;
     }
 
-    public void setAllPokemon(List<Pokemon> pokemons){
+    public void setAllPokemon(Set<Pokemon> pokemonSet){
+        List<Pokemon> pokemons = new ArrayList<>(pokemonSet);
         this.pokemon1 = pokemons.get(0);
         this.pokemon2 = pokemons.get(1);
         this.pokemon3 = pokemons.get(2);

@@ -50,7 +50,7 @@ public class PokemonController {
         try{
             Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
             pokemonService.deletePokemon(pokemonId);
-        }catch (PokemonNotFoundException e){}
+        }catch (PokemonNotFoundException ignored){}
         return ResponseEntity.ok(null);
     }
 
