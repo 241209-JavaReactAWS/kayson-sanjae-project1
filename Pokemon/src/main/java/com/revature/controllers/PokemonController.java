@@ -1,6 +1,5 @@
 package com.revature.controllers;
 
-import com.revature.exceptions.pokemon.InvalidPokemonException;
 import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.models.Pokemon;
 import com.revature.services.PokemonService;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/pokemons")
+@RequestMapping("/pokemons")
 @CrossOrigin(origins = "http://localhost:5174", allowCredentials = "true")
 public class PokemonController {
     private final PokemonService pokemonService;
@@ -52,7 +51,7 @@ public class PokemonController {
             Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
             pokemonService.deletePokemon(pokemonId);
         }catch (PokemonNotFoundException e){}
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(null);
     }
 
 

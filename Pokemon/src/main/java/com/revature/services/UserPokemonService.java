@@ -1,10 +1,8 @@
 package com.revature.services;
 
 import com.revature.daos.UserPokemonDAO;
-import com.revature.exceptions.pokemon.InvalidPokemonException;
 import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.exceptions.user.UserNotFoundException;
-import com.revature.exceptions.user_shop.UserPokemonNotFoundException;
 import com.revature.models.Pokemon;
 import com.revature.models.User;
 import com.revature.models.UserPokemon;
