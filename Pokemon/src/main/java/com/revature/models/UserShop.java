@@ -12,9 +12,8 @@ public class UserShop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userShopId;
-    private int userId;
     @OneToOne
-    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne
@@ -45,14 +44,6 @@ public class UserShop {
 
     public void setUserShopId(int userShopId) {
         this.userShopId = userShopId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public User getUser() {

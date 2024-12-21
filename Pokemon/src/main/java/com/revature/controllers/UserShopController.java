@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.exceptions.user.UserExistsException;
 import com.revature.exceptions.user.UserNotFoundException;
 import com.revature.models.Pokemon;
 import com.revature.models.UserShop;
@@ -20,6 +21,22 @@ public class UserShopController {
     @Autowired
     public UserShopController(UserShopService userShopService) {
         this.userShopService = userShopService;
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<UserShop> addUserShop(HttpSession session){
+        if(session.isNew() || session.getAttribute("userId") == null){
+            return ResponseEntity.badRequest().build();
+        }
+
+        try{
+            UserShop newShop = userShopService.addUserShop((int) session.getAttribute("userId"));
+            return ResponseEntity.ok(newShop);
+        } catch (UserNotFoundException e) {
+             return ResponseEntity.status(404).build();
+        } catch (UserExistsException e) {
+            return ResponseEntity.status(409).build();
+        }
     }
 
     @GetMapping
