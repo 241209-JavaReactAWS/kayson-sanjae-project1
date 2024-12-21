@@ -1,16 +1,14 @@
 package com.revature.controllers;
 
+import com.revature.exceptions.InvalidPokemonException;
 import com.revature.models.Pokemon;
 import com.revature.services.PokemonService;
-import com.revature.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/pokemons")
@@ -27,40 +25,40 @@ public class PokemonController {
         return pokemonService.getAllPokemons();
     }
 
-    @GetMapping("id/{pokemonId}")
+    @GetMapping("/{pokemonId}")
     public ResponseEntity<Pokemon> getPokemonById(@PathVariable int pokemonId){
-        Optional<Pokemon> returnedPokemon_opt = pokemonService.findPokemonById(pokemonId);
-
-        if(returnedPokemon_opt.isPresent()){
-            return ResponseEntity.status(200).body(returnedPokemon_opt.get());
-        }else {
+        try{
+            Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
+            return ResponseEntity.ok(pokemon);
+        }catch(InvalidPokemonException e){
             return ResponseEntity.status(404).build();
         }
     }
 
-    @DeleteMapping("id/{pokemonId}")
-    public ResponseEntity<Pokemon> deletePokemonById(@PathVariable int pokemonId){
-        Optional<Pokemon> returnedPokemon_opt = pokemonService.findPokemonById(pokemonId);
+    @GetMapping()
+    public ResponseEntity<Pokemon> getPokemonByName(@RequestParam String name){
+        try{
+            Pokemon pokemon = pokemonService.getPokemonByName(name);
+            return ResponseEntity.status(302).header("Location", "/" + pokemon.getPokemonId())
+                    .build();
+        }catch (InvalidPokemonException e){
+            return ResponseEntity.status(404).build();
+        }
+    }
 
-        if(returnedPokemon_opt.isPresent()){
+    @GetMapping()
+    public ResponseEntity<List<Pokemon>> getAllPokemon(){
+        return ResponseEntity.ok(pokemonService.getAllPokemons());
+    }
+
+    @DeleteMapping("/{pokemonId}")
+    public ResponseEntity<?> deletePokemonById(@PathVariable int pokemonId){
+        try{
+            Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
             pokemonService.deletePokemon(pokemonId);
-            return ResponseEntity.status(200).build();
-        }else {
-            return ResponseEntity.status(404).build();
-        }
+        }catch (InvalidPokemonException e){}
+        return ResponseEntity.noContent().build();
     }
-
-    @GetMapping("name/{name}")
-    public ResponseEntity<Pokemon> getPokemonByName(@PathVariable String name){
-        Optional<Pokemon> returnedPokemon_opt = pokemonService.findPokemonByName(name);
-
-        if(returnedPokemon_opt.isPresent()){
-            return ResponseEntity.status(200).body(returnedPokemon_opt.get());
-        }else {
-            return ResponseEntity.status(404).build();
-        }
-    }
-
 
 
     @PostMapping
@@ -82,5 +80,4 @@ public class PokemonController {
             return ResponseEntity.badRequest().build();
         }
     }
-
 }

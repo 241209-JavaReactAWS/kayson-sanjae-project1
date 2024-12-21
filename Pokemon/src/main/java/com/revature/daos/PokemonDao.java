@@ -3,10 +3,12 @@ package com.revature.daos;
 import com.revature.models.Pokemon;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface PokemonDao extends JpaRepository<Pokemon, Integer> {
@@ -14,5 +16,8 @@ public interface PokemonDao extends JpaRepository<Pokemon, Integer> {
     Optional<Pokemon> findByName(String name);
 
     @Query(value = "select * from pokemons order by rand() limit 5", nativeQuery = true)
-    List<Pokemon> findFiveRandom();
+    Set<Pokemon> findFiveRandom();
+
+    @Query("from Pokemon p where p.type1 = :type or p.type2 = :type")
+    Set<Pokemon> findByType(@Param("type") String type);
 }
