@@ -1,4 +1,4 @@
-package com.revature.exceptions.user_shop;
+package com.revature.exceptions.user_pokemon;
 
 public class UserPokemonNotFoundException extends Exception {
 }

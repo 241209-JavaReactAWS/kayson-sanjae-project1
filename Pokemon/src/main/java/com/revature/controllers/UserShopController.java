@@ -4,6 +4,7 @@ import com.revature.exceptions.user.UserExistsException;
 import com.revature.exceptions.user.UserNotFoundException;
 import com.revature.models.Pokemon;
 import com.revature.models.UserShop;
+import com.revature.models.UserShopDTO;
 import com.revature.services.UserShopService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,14 @@ public class UserShopController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<UserShop> addUserShop(HttpSession session){
+    public ResponseEntity<UserShopDTO> addUserShop(HttpSession session){
         if(session.isNew() || session.getAttribute("userId") == null){
             return ResponseEntity.badRequest().build();
         }
 
         try{
-            UserShop newShop = userShopService.addUserShop((int) session.getAttribute("userId"));
-            return ResponseEntity.ok(newShop);
+            UserShop userShop = userShopService.addUserShop((int) session.getAttribute("userId"));
+            return ResponseEntity.ok(new UserShopDTO(userShop));
         } catch (UserNotFoundException e) {
              return ResponseEntity.status(404).build();
         } catch (UserExistsException e) {
@@ -40,14 +41,14 @@ public class UserShopController {
     }
 
     @GetMapping
-    public ResponseEntity<UserShop> getUserShop(HttpSession session){
+    public ResponseEntity<UserShopDTO> getUserShop(HttpSession session){
         if(session.isNew() || session.getAttribute("userId") == null){
             return ResponseEntity.badRequest().build();
         }
 
         try{
             UserShop userShop = userShopService.getUserShop((int) session.getAttribute("userId"));
-            return ResponseEntity.ok(userShop);
+            return ResponseEntity.ok(new UserShopDTO(userShop));
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).build();
         }
@@ -68,14 +69,14 @@ public class UserShopController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<UserShop> updateUserShop(HttpSession session){
+    public ResponseEntity<UserShopDTO> updateUserShop(HttpSession session){
         if(session.isNew() || session.getAttribute("userId") == null){
             return ResponseEntity.badRequest().build();
         }
 
         try{
             UserShop userShop = userShopService.updateUserShop((int) session.getAttribute("userId"));
-            return ResponseEntity.ok(userShop);
+            return ResponseEntity.ok(new UserShopDTO(userShop));
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).build();
         }
