@@ -9,6 +9,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import User_m from './components/user_m/User_m'
 import Shop from "./components/shop-page/Shop";
 import CollectionContainer from "./components/collection-page/CollectionContainer";
+import { PokemonProvider } from "./context/PokemonContext";
 
 
 
@@ -55,6 +56,7 @@ function App() {
         setCoins,
       }
     }>
+    <PokemonProvider>
       <BrowserRouter>
       <Nav />
       
@@ -69,6 +71,7 @@ function App() {
       </Routes>
 
       </BrowserRouter>
+      </PokemonProvider>
     </ authContext.Provider>
   )
 }
