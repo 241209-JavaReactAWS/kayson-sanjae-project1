@@ -7,11 +7,7 @@ import Filters from "./Filters";
 
 function Collection() {
   const { pokemonPropsList } : PokemonContextType = usePokemon();
-  const [filteredPokemons, setFilteredPokemons] = useState<PokemonProps[]>([]);
-
-  useEffect(() => {
-    setFilteredPokemons(pokemonPropsList);
-  }, [pokemonPropsList]);
+  const [filteredPokemons, setFilteredPokemons] = useState<PokemonProps[]>(pokemonPropsList);
 
   const updateFilteredPokemons = (filtered: PokemonProps[]) => {
     setFilteredPokemons(filtered);
