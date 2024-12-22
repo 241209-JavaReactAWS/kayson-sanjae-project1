@@ -17,9 +17,9 @@ export const PokemonProvider = ({ children} : React.PropsWithChildren) => {
   const [unacquiredList, setUnacquiredList] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/users/123/pokemons?status=acquired', { withCredentials: true })
+    axios.get('http://localhost:8080/users/pokemons?status=acquired', { withCredentials: true })
       .then((res) => setAcquiredList(res.data));
-    axios.get('http://localhost:8080/users/123/pokemons?status=unacquired', { withCredentials: true })
+    axios.get('http://localhost:8080/users/pokemons?status=unacquired', { withCredentials: true })
       .then((res) => setUnacquiredList(res.data));
   }, [auth?.userId]);
 
