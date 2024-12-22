@@ -24,6 +24,7 @@ function User_m() {
     }
 
     // Delete a Pokemon
+    /*
   const handlePokemonDeleteButton = (event: SyntheticEvent<HTMLButtonElement>) => {
     const userId = event.currentTarget.getAttribute('data-id');
     axios
@@ -40,7 +41,7 @@ function User_m() {
       .catch((err) => {
         alert('Unexpected error while deleting the Pokemon: ' + err.message);
       });
-  };
+  };*/
 
     useEffect(()=>getUserList(), []);
 
@@ -70,19 +71,19 @@ function User_m() {
                 <td>{user.username}</td>
                 <td>{user.role}</td>
                 <td>{user.coins}</td>
-                <td>{user.lastLogin.toString()}</td>
+                <td>{user.lastLogin?.toString()}</td>
                 <td>
-                  <button className="btn btn-success" onClick={handleAdd}>
+                  <button className="btn btn-success" >
                     Add
                   </button>
                 </td>
                 <td>
-                  <button className="btn btn-warning" data-id={pokemon.pokemonId} onClick={handleEdit}>
+                  <button className="btn btn-warning" data-id={""} >
                     Edit
                   </button>
                 </td>
                 <td>
-                  <button className="btn btn-danger" data-id={user.userId} onClick={handlePokemonDeleteButton}>
+                  <button className="btn btn-danger" data-id={user.userId}>
                     Delete
                   </button>
                 </td>

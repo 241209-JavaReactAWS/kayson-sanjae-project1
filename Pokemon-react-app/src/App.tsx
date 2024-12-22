@@ -7,14 +7,12 @@ import Pokemon_m from './components/Pokemon_m/Pokemon_m'
 import Login from './components/login/login'
 import { createContext, useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-<<<<<<< HEAD
 import User_m from './components/user_m/User_m'
-=======
-import Collection from "./components/collection/Collection";
->>>>>>> 30fd2eebd1cef1dce62929b64bcb8ff4978054e7
+import Collection from './components/collection/Collection'
+
 
 export interface AuthContextType{
-  userId : number,
+  userId : number | null,
   username: string,
   setUsername: (username: string) => void,
   role: "unauthenticated" | "USER" | "ADMIN",
@@ -26,18 +24,20 @@ export interface AuthContextType{
 export const authContext = createContext<AuthContextType | null>(null);
 
 function App() {
-  const navigate = useNavigate();
-  const [userId, setUserId] = useState<number>(-1);
+  // const navigate = useNavigate();
+  const [userId, setUserId] = useState<number | null>(-1);
   const [username, setUsername] = useState<string>('');
   const [role, setRole] = useState<"unauthenticated" | "USER" | "ADMIN">('unauthenticated');
   const [coins, setCoins] = useState<number>(0);
 
+  /*
   useEffect(() => {
     if(!useContext(authContext)){
       navigate("/login");
     }
   }, [useContext(authContext), navigate]);
-  
+  */
+
   // get current user session info from backend
   useEffect(()=>{
     axios.get<User>('http://localhost:8080/users', {withCredentials: true})

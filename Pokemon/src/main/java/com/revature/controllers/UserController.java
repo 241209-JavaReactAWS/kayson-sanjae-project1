@@ -88,7 +88,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping()
+    @GetMapping("/allusers")
     public ResponseEntity<List<User>> getALlUser(HttpSession session){
         if (session.isNew() || session.getAttribute("username") == null){
             return ResponseEntity.status(401).build();
@@ -96,6 +96,8 @@ public class UserController {
         List<User> users = userService.findAllUsers();
         return ResponseEntity.ok(users);
     }
+
+
 }
 
 

@@ -3,6 +3,6 @@ export interface User{
     username: string;
     password?: string;
     role: string;
-    lastLogin: Date | null;
+    lastLogin?: Date | null;
     coins: number;
 }

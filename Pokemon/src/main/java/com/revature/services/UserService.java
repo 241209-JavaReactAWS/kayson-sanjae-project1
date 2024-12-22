@@ -55,4 +55,8 @@ public class UserService {
     public List<User> findAllUsers(){
         return userDAO.findAll();
     }
+
+    public void deleteUser(int id){
+        userDAO.deleteById(id);
+    }
 }

@@ -13,7 +13,7 @@ function Pokemon_m() {
   // Fetch the Pokemon list
   const getPokemonList = () => {
     axios
-      .get('http://localhost:8080/api/pokemons')
+      .get('http://localhost:8080/pokemons')
       .then((response) => {
         setPokemonList(response.data);
       })
@@ -26,7 +26,7 @@ function Pokemon_m() {
   const handlePokemonDelete = (event: SyntheticEvent<HTMLButtonElement>) => {
     const pokemonId = event.currentTarget.getAttribute('data-id');
     axios
-      .delete(`http://localhost:8080/api/pokemons/id/${pokemonId}`)
+      .delete(`http://localhost:8080/pokemons/id/${pokemonId}`)
       .then((response) => {
         if (response.status === 200) {
           setPokemonList((prevList) => prevList?.filter((p) => p.pokemonId !== Number(pokemonId)) || null);
@@ -72,7 +72,7 @@ function Pokemon_m() {
     if (isEditing) {
       console.log(formData)
       axios
-        .put(`http://localhost:8080/api/pokemons`, formData)
+        .put(`http://localhost:8080/pokemons`, formData)
         .then(() => {
           getPokemonList();
           setShowModal(false);
@@ -82,7 +82,7 @@ function Pokemon_m() {
         });
     } else {
       axios
-        .post('http://localhost:8080/api/pokemons', formData)
+        .post('http://localhost:8080/pokemons', formData)
         .then(() => {
           getPokemonList();
           setShowModal(false);
