@@ -21,8 +21,5 @@ public interface UserPokemonDAO extends JpaRepository<UserPokemon, Integer> {
 
     @Query("from Pokemon p where p.id not in (select up.pokemon.id from UserPokemon up where up.user.id = :userId)")
     Set<Pokemon> findUnacquired(@Param("userId") int userId);
-
-    @Query("from Pokemon p where p.type1 = :type or p.type2 = :type")
-    Set<Pokemon> findByType(@Param("type") String type);
 }
 

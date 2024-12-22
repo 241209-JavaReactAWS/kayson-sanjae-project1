@@ -3,16 +3,17 @@ package com.revature.models;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class UserShop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userShopId;
-    private int userId;
     @OneToOne
-    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne
@@ -43,14 +44,6 @@ public class UserShop {
 
     public void setUserShopId(int userShopId) {
         this.userShopId = userShopId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public User getUser() {
@@ -101,8 +94,8 @@ public class UserShop {
         this.pokemon5 = pokemon5;
     }
 
-    public List<Pokemon> getAllPokemon(){
-        List<Pokemon> pokemons = new ArrayList<>();
+    public Set<Pokemon> getAllPokemon(){
+        Set<Pokemon> pokemons = new HashSet<>();
         pokemons.add(pokemon1);
         pokemons.add(pokemon2);
         pokemons.add(pokemon3);
@@ -111,7 +104,8 @@ public class UserShop {
         return pokemons;
     }
 
-    public void setAllPokemon(List<Pokemon> pokemons){
+    public void setAllPokemon(Set<Pokemon> pokemonSet){
+        List<Pokemon> pokemons = new ArrayList<>(pokemonSet);
         this.pokemon1 = pokemons.get(0);
         this.pokemon2 = pokemons.get(1);
         this.pokemon3 = pokemons.get(2);

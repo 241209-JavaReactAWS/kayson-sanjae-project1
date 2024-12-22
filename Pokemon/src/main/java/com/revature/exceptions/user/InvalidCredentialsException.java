@@ -1,4 +1,4 @@
-package com.revature.exceptions;
+package com.revature.exceptions.user;
 
 public class InvalidCredentialsException extends Exception {
 }

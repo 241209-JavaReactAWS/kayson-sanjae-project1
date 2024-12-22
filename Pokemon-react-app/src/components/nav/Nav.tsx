@@ -9,6 +9,8 @@ function Nav() {
             <li><Link to="/logout">Logout</ Link></li>
             <li><Link to="/pokemon-management">Pokemon Management</ Link></li>
             <li><Link to="/user-management">User Management</ Link></li>
+            <li><Link to="/collection">Collection</Link></li>
+            <li><Link to="/shop">Shop</Link></li>
         </ul>
     </nav>
   )

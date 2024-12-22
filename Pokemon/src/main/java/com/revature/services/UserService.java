@@ -1,9 +1,9 @@
 package com.revature.services;
 
 import com.revature.daos.UserDAO;
-import com.revature.exceptions.InvalidCredentialsException;
-import com.revature.exceptions.UserExistsException;
-import com.revature.exceptions.UserNotFoundException;
+import com.revature.exceptions.user.InvalidCredentialsException;
+import com.revature.exceptions.user.UserExistsException;
+import com.revature.exceptions.user.UserNotFoundException;
 import com.revature.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +24,7 @@ public class UserService {
         if(optionalUser.isPresent()){
             throw new UserExistsException();
         }
-
         // todo: password specifications
-
         return userDAO.save(user);
     }
 
@@ -38,8 +36,7 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public User findUserByUsername(String username) throws UserNotFoundException {
-        // this may not be needed
+    public User getUserByUsername(String username) throws UserNotFoundException {
         Optional<User> optionalUser = userDAO.findByUsername(username);
         if(optionalUser.isEmpty()){
             throw new UserNotFoundException();
@@ -47,12 +44,11 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public User findUserById(int id) throws UserNotFoundException {
+    public User getUserById(int id) throws UserNotFoundException {
         Optional<User> optionalUser = userDAO.findById(id);
         if(optionalUser.isEmpty()){
             throw new UserNotFoundException();
         }
-
         return optionalUser.get();
     }
 
