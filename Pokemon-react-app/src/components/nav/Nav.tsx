@@ -31,8 +31,8 @@ function Nav() {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/login-register">Login/Register</ Link></li>
             {auth?.username && <li><button type="button"  onClick={Logout}>Logout</button></li>} 
-            <li><Link to="/pokemon-management">Pokemon Management</ Link></li>
-            <li><Link to="/user-management">User Management</ Link></li>
+            {auth?.role === "ADMIN" && <li><Link to="/pokemon-management">Pokemon Management</ Link></li>} 
+            {auth?.role === "ADMIN" && <li><Link to="/user-management">User Management</ Link></li>}
             <li><Link to="/collection">Collection</Link></li>
             <li><Link to="/shop">Shop</Link></li>
         </ul>

@@ -85,6 +85,12 @@ function Login() {
         console.log("Current username and role:")
         console.log(auth?.username)
         console.log(auth?.role)
+        /*axios.get("http://localhost:8080/users/username", {withCredentials: true})
+        .then((res)=>{
+            console.log(`From backend, user name ${res.data.username}`)
+            console.log(`From backend, user role ${res.data.role}`)
+        })*/
+
     }, [])
 
 
