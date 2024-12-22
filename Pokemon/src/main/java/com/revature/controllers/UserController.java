@@ -33,6 +33,7 @@ public class UserController {
         }
     }
 
+
     @GetMapping("/id")
     public ResponseEntity<User> getUserInfoHandler(HttpSession session) {
         if (session.isNew() || session.getAttribute("userId") == null){
@@ -63,6 +64,11 @@ public class UserController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers(){
+        return ResponseEntity.ok(userService.findAllUsers());
+    }
+
     @PostMapping("/login")
     public ResponseEntity<User> loginHandler(@RequestBody User user, HttpSession session) {
         try {
@@ -82,14 +88,16 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping()
+    @GetMapping("/allusers")
     public ResponseEntity<List<User>> getALlUser(HttpSession session){
         if (session.isNew() || session.getAttribute("username") == null){
             return ResponseEntity.status(401).build();
         }
-        List<User> users = userService.allUsers();
+        List<User> users = userService.findAllUsers();
         return ResponseEntity.ok(users);
     }
+
+
 }
 
 

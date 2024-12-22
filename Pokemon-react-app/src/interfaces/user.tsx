@@ -1,8 +1,8 @@
 export interface User{
-    userId: number;
+    userId: number | null;
     username: string;
-    password: string;
+    password?: string;
     role: string;
-    lastLogin: Date;
+    lastLogin?: Date | null;
     coins: number;
 }
