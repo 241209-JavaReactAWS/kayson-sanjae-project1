@@ -7,13 +7,9 @@ import Pokemon_m from './components/Pokemon_m/Pokemon_m'
 import Login from './components/login/login'
 import { createContext, useContext, useEffect, useState } from 'react'
 import axios from 'axios'
-<<<<<<< HEAD
 import Collection from "./components/collection-page/CollectionContainer";
-=======
 import User_m from './components/user_m/User_m'
-import Collection from './components/collection/Collection'
 
->>>>>>> c48639955fbfacf47166fa64a55e7319574885ff
 
 export interface AuthContextType{
   userId : number | null,
