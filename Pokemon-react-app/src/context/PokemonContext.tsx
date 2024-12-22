@@ -5,7 +5,7 @@ import { Pokemon } from "../interfaces/pokemon";
 import { PokemonProps } from "../interfaces/pokemonProps";
 import { PokemonContextType } from "../interfaces/pokemonContextType";
 
-const PokemonContext = createContext<PokemonContextType | null>(null);
+const PokemonContext = createContext<PokemonContextType>({pokemonPropsList: []});
 
 export const usePokemon = () => {
   return useContext(PokemonContext);

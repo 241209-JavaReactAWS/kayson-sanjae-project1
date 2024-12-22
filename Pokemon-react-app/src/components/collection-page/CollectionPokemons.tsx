@@ -1,7 +1,6 @@
-import Pokemon, { PokemonProps } from "../pokemon/Pokemon";
-interface PokemonPropsList{
-  pokemonPropsList: PokemonProps[]
-}
+import { PokemonPropsList } from "../../interfaces/PokemonPropsList";
+import Pokemon from "../pokemon/Pokemon";
+
 function CollectionPokemons({pokemonPropsList}: PokemonPropsList) {
   return (
   <>
