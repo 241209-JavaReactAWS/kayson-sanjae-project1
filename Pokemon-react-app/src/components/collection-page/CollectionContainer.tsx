@@ -10,7 +10,7 @@ function Collection() {
   const [filteredPokemons, setFilteredPokemons] = useState<PokemonProps[]>([]);
 
   useEffect(() => {
-    setFilteredPokemons(pokemonPropsList);  // Initialize filteredPokemons with the full list
+    setFilteredPokemons(pokemonPropsList);
   }, [pokemonPropsList]);
 
   const updateFilteredPokemons = (filtered: PokemonProps[]) => {

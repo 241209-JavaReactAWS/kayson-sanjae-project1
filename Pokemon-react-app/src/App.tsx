@@ -9,6 +9,8 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import Collection from "./components/collection-page/CollectionContainer";
 import User_m from './components/user_m/User_m'
+import Shop from "./components/shop-page/Shop";
+import CollectionContainer from "./components/collection-page/CollectionContainer";
 
 
 export interface AuthContextType{
@@ -78,8 +80,8 @@ function App() {
         <Route path='/pokemon-management' element={<Pokemon_m/>} />
         <Route path='/user-management' element={<User_m />} />
         <Route path='/user-management' element />
-        <Route path='/collection' element={<Collection/>}/>
-        <Route path='/shop' element={<Collection/>}/>
+        <Route path='/collection' element={<CollectionContainer/>}/>
+        <Route path='/shop' element={<Shop/>}/>
       </Routes>
 
       </BrowserRouter>

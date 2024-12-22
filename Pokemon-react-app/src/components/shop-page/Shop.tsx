@@ -1,37 +1,26 @@
-import { useContext, useEffect, useState } from "react";
 import { PokemonContextType } from "../../interfaces/pokemonContextType";
-import { PokemonProps } from "../../interfaces/pokemonProps";
 import { usePokemon } from "../../context/PokemonContext";
-import { authContext } from "../../App";
 import Pokemon from "../pokemon/Pokemon";
+import UserInfo from "./UserInfo";
 
 
 function Shop() {
-  const auth = useContext(authContext);
-  const pokemonContextType: PokemonContextType|null = usePokemon();
-  const [userPokemons, setUserPokemons] = useState<PokemonProps[]>([]);
-
-  useEffect(() => {
-      if(!pokemonContextType){ return; }
-      const {pokemonPropsList} = pokemonContextType;
-      setUserPokemons(pokemonPropsList);
-    }, [pokemonContextType]);
-
-  if(!auth){
-    throw new Error("Authentication missing");
-  }
-
+  const {pokemonPropsList}: PokemonContextType = usePokemon();
   return (
     <>
-      <div>
-        <h4 className='userInfo'>{auth.username}</h4>
-        <h4 className='userInfo'>{auth.coins}</h4>
-      </div>
+      <UserInfo/>
       <h2 id="daily-shop-title">Daily Shop</h2>
       <div>
-        {userPokemons.map((p) =>
+        {pokemonPropsList.map((p) => (
+          <>
           <Pokemon key={p.id} {...p}/>
-          )}
+          <button
+            className={`buy-button ${p.owned ? 'disabled' : ''}`}
+            disabled={p.owned}>
+            BUY
+          </button>
+          </>
+        ))}
       </div>
     </>
   );
