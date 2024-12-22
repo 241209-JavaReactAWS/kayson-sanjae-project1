@@ -1,9 +1,12 @@
 package com.revature.services;
 
 import com.revature.daos.UserDAO;
+import com.revature.exceptions.pokemon.InvalidPokemonException;
+import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.exceptions.user.InvalidCredentialsException;
 import com.revature.exceptions.user.UserExistsException;
 import com.revature.exceptions.user.UserNotFoundException;
+import com.revature.models.Pokemon;
 import com.revature.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,5 +61,16 @@ public class UserService {
 
     public void deleteUser(int id){
         userDAO.deleteById(id);
+    }
+
+    public User editUser(User user) throws UserNotFoundException {
+        if(user == null){
+            throw new UserNotFoundException();
+        }
+
+        if(userDAO.findById(user.getUserId()).isEmpty()){
+            throw new UserNotFoundException();
+        }
+        return userDAO.save(user);
     }
 }

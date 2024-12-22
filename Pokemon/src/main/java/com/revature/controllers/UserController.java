@@ -1,8 +1,10 @@
 package com.revature.controllers;
 
+import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.exceptions.user.InvalidCredentialsException;
 import com.revature.exceptions.user.UserExistsException;
 import com.revature.exceptions.user.UserNotFoundException;
+import com.revature.models.Pokemon;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -56,7 +58,7 @@ public class UserController {
         }
 
         try{
-            User userToBeReturned = userService.getUserById((int)session.getAttribute("username"));
+            User userToBeReturned = userService.getUserByUsername((String)session.getAttribute("username"));
             return ResponseEntity.status(302).header("Location", "/" + userToBeReturned.getUserId())
                     .body(userToBeReturned);
         }catch(UserNotFoundException e){
@@ -97,7 +99,21 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @DeleteMapping("/deleteUser/{userid}")
+    public ResponseEntity<User> deleteUserById(@PathVariable int userid) {
+        userService.deleteUser(userid);
+        return ResponseEntity.ok(null);
+    }
 
+    @PutMapping("/edituser")
+    public ResponseEntity<User> editUser(HttpSession session, @RequestBody User user){
+        try{
+            User returnedUser = userService.editUser(user);
+            return ResponseEntity.status(200).body(returnedUser);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
 
 

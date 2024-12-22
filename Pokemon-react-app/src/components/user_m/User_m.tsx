@@ -1,4 +1,6 @@
 import './user_m.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { User } from '../../interfaces/user';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import axios from 'axios';
@@ -6,7 +8,7 @@ import axios from 'axios';
 
 function User_m() {
     const [userList, setUserList] = useState<User[] | null>([])
-    const [showModal,setShowMal] = useState<boolean>(false)
+    const [showModal,setShowModal] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [formData, setFormData] = useState<User>(
         { userId: null,
@@ -23,27 +25,77 @@ function User_m() {
         .catch((err)=>console.log("Cannot get user list due to " + err.message))
     }
 
-    // Delete a Pokemon
-    /*
-  const handlePokemonDeleteButton = (event: SyntheticEvent<HTMLButtonElement>) => {
+    // Delete a user
+  const handleUserDelete = (event: SyntheticEvent<HTMLButtonElement>) => {
     const userId = event.currentTarget.getAttribute('data-id');
     axios
-      .delete(`http://localhost:8080/api/pokemons/id/${pokemonId}`)
+      .delete(`http://localhost:8080/users/deleteUser/${userId}`)
       .then((response) => {
         if (response.status === 200) {
-          setPokemonList((prevList) => prevList?.filter((p) => p.pokemonId !== Number(pokemonId)) || null);
-        } else if (response.status === 404) {
-          alert('Cannot find the Pokemon in the database.');
+          setUserList((prevList) => prevList?.filter((p) => p.userId !== Number(userId)) || null);
         } else {
-          alert('Unexpected error while deleting the Pokemon.');
+          alert('From backend, unexpected error while deleting the user id ' + userId);
         }
       })
       .catch((err) => {
-        alert('Unexpected error while deleting the Pokemon: ' + err.message);
+        alert('Unexpected error while deleting the user, user ' + err.message);
       });
-  };*/
+  };
 
-    useEffect(()=>getUserList(), []);
+   // Open Add modal
+   const handleAdd = () => {
+    setFormData({ userId:null, username: '', password: '', role: '', lastLogin: null, coins: 0 });
+    setIsEditing(false);
+    setShowModal(true);
+  };
+
+  // Open Edit modal
+  const handleEdit = (event: SyntheticEvent<HTMLButtonElement>) => {
+    const userId = event.currentTarget.getAttribute('data-id');
+    const userToEdit = userList?.find((p) => p.userId === Number(userId));
+
+    if (userToEdit) {
+      setFormData(userToEdit);
+      setIsEditing(true);
+      setShowModal(true);
+    }
+  };
+
+  // Handle form input changes
+  const handleInputChange = (event: SyntheticEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Submit the form (Add or Edit)
+  const handleSubmit = (event: SyntheticEvent) => {
+    event.preventDefault();
+    if (isEditing) {
+      console.log(formData)
+      axios
+        .put(`http://localhost:8080/users/edituser`, formData)
+        .then(() => {
+          getUserList();
+          setShowModal(false);
+        })
+        .catch((err) => {
+          alert('From backend, cannot edit the user: ' + err.message);
+        });
+    } else {
+      axios
+        .post('http://localhost:8080/users/register', formData)
+        .then(() => {
+          getUserList();
+          setShowModal(false);
+        })
+        .catch((err) => {
+          alert('Error while adding the user: ' + err.message);
+        });
+    }
+  };
+  
+  
+  useEffect(()=>getUserList(), []);
 
   return (
     <div className="listContainer">
@@ -73,17 +125,17 @@ function User_m() {
                 <td>{user.coins}</td>
                 <td>{user.lastLogin?.toString()}</td>
                 <td>
-                  <button className="btn btn-success" >
+                  <button className="btn btn-success" onClick={handleAdd} >
                     Add
                   </button>
                 </td>
                 <td>
-                  <button className="btn btn-warning" data-id={""} >
+                  <button className="btn btn-warning" data-id={user.userId} onClick={handleEdit}>
                     Edit
                   </button>
                 </td>
                 <td>
-                  <button className="btn btn-danger" data-id={user.userId}>
+                  <button className="btn btn-danger" data-id={user.userId} onClick={handleUserDelete}>
                     Delete
                   </button>
                 </td>
@@ -92,6 +144,42 @@ function User_m() {
           </tbody>
         </table>
         </div>
+
+
+        {showModal && (
+        <div className="modal d-block" tabIndex={-1}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">{isEditing ? 'Edit User' : 'Add User'}</h5>
+                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <div className="modal-body">
+                  <label>User Id</label>
+                  <input type="number" name="userId" placeholder="userId" value={formData.userId || ''} onChange={handleInputChange} disabled={!isEditing} className="form-control mb-2" required />
+                  <label>User name</label>
+                  <input type="text" name="username" placeholder="username" value={formData.username || ''} onChange={handleInputChange} className="form-control mb-2" required />
+                  <label>Password</label>
+                  <input type="text" name="password" placeholder="password" value={formData.password || ''} onChange={handleInputChange} className="form-control mb-2" required />
+                  <label>Role</label>
+                  <input type="text" name="role" placeholder="role" value={formData.role || ''} onChange={handleInputChange} className="form-control mb-2" />
+                  <label>Coins</label>
+                  <input type="number" name="coins" placeholder="coins" value={formData.coins || 0} onChange={handleInputChange} className="form-control mb-2" required />
+                </div>
+                <div className="modal-footer">
+                  <button type="submit" className="btn btn-primary">
+                    {isEditing ? 'Update' : 'Register'}
+                  </button>
+                  <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                    Close
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
