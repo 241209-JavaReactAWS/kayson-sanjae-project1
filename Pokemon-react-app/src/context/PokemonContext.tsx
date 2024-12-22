@@ -18,11 +18,12 @@ export const PokemonProvider = ({ children} : React.PropsWithChildren) => {
 
   // Get the lists of pokemons the user has acquired and has not acquired (WHEN THEY LOGIN)
   useEffect(() => {
+    console.log("Here")
     axios.get('http://localhost:8080/users/pokemons?status=acquired', { withCredentials: true })
-      .then((res) => {console.log(res.data); setAcquiredList(res.data)});
+      .then((res) => setAcquiredList(res.data));
     axios.get('http://localhost:8080/users/pokemons?status=unacquired', { withCredentials: true })
       .then((res) => setUnacquiredList(res.data));
-  }, [auth?.userId]);
+  }, []);
 
   // Maps pokemons to pokemonProps
   const mapPokemonList = (pokemonList:Pokemon[], owned:boolean, variant:string) : PokemonProps[] => pokemonList.map((p) => ({

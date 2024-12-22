@@ -33,8 +33,8 @@ function Nav() {
             {auth?.username && <li><button type="button"  onClick={Logout}>Logout</button></li>} 
             {auth?.role === "ADMIN" && <li><Link to="/pokemon-management">Pokemon Management</ Link></li>} 
             {auth?.role === "ADMIN" && <li><Link to="/user-management">User Management</ Link></li>}
-            <li><Link to="/collection">Collection</Link></li>
-            <li><Link to="/shop">Shop</Link></li>
+            {auth?.role === "USER" && <li><Link to="/collection">Collection</Link></li>}
+            {auth?.role === "USER" && <li><Link to="/shop">Shop</Link></li>}
         </ul>
     </nav>
   )

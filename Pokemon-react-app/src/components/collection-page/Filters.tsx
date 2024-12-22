@@ -106,6 +106,7 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
         value="acquired"
         checked={selectedStatus === "acquired"}
         onClick={() => handleRadioChange("acquired")}
+        readOnly
       />
       <label htmlFor="acquired-checkbox">acquired</label>
 
@@ -116,6 +117,7 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
         value="unacquired"
         checked={selectedStatus === "unacquired"}
         onClick={() => handleRadioChange("unacquired")}
+        readOnly
       />
       <label htmlFor="unacquired-checkbox">unacquired</label>
     </>
