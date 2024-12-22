@@ -17,6 +17,7 @@ import Logout from './components/login/logout'
 
 export interface AuthContextType{
   userId : number | null,
+  setUserId: (coins: number) => void 
   username: string,
   setUsername: (username: string) => void,
   role: "unauthenticated" | "USER" | "ADMIN",
@@ -48,6 +49,7 @@ function App() {
     <authContext.Provider value={
       {
         userId,
+        setUserId,
         username,
         setUsername,
         role,
