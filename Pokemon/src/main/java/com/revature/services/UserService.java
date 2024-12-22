@@ -56,7 +56,7 @@ public class UserService {
         return optionalUser.get();
     }
 
-    public List<User> allUsers(){
+    public List<User> findAllUsers(){
         return userDAO.findAll();
     }
 }

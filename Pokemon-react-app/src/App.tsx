@@ -7,6 +7,7 @@ import Pokemon_m from './components/Pokemon_m/Pokemon_m'
 import Login from './components/login/login'
 import { createContext, useEffect, useState } from 'react'
 import axios from 'axios'
+import User_m from './components/user_m/User_m'
 
 export interface AuthContextType{
   username: string,
@@ -53,7 +54,7 @@ function App() {
         <Route path='/login-register' element={<Login />} />
         <Route path='/logout' element />
         <Route path='/pokemon-management' element={<Pokemon_m/>} />
-        <Route path='/user-management' element />
+        <Route path='/user-management' element={<User_m />} />
         
       </Routes>
 

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:5174", allowCredentials = "true")
@@ -31,7 +33,7 @@ public class UserController {
         }
     }
 
-    @GetMapping
+    @GetMapping("loginuser")
     public ResponseEntity<User> getUserInfoHandler(HttpSession session) throws UserNotFoundException {
         if (session.isNew() || session.getAttribute("username") == null){
             return ResponseEntity.status(401).build();
@@ -39,6 +41,11 @@ public class UserController {
         User userToBeReturned = userService.findUserByUsername( (String) session.getAttribute("username"));
 
         return ResponseEntity.ok(userToBeReturned);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers(){
+        return ResponseEntity.ok(userService.findAllUsers());
     }
 
     @PostMapping("/login")

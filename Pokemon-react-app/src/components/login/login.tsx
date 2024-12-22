@@ -22,6 +22,7 @@ function Login() {
         }
 
         if(!password){
+            console.log("password input: " + password)
             alert("Please enter a password")
             return;
         }
@@ -53,7 +54,7 @@ function Login() {
         <div className="mb-3">
             <label htmlFor="password" className="form-label">Password</label>
             <input type="password" className="form-control" id="password" 
-             onChange={(e:SyntheticEvent) => { setUsername((e.target as HTMLInputElement).value)}}
+             onChange={(e:SyntheticEvent) => { setPassword((e.target as HTMLInputElement).value)}}
             />
         </div>
 
