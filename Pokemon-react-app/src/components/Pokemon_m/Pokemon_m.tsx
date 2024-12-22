@@ -1,14 +1,19 @@
 import './Pokemon_m.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useContext, useEffect, useState } from 'react';
 import { Pokemon } from '../../interfaces/pokemon';
+import { authContext } from '../../App';
 
 function Pokemon_m() {
+  const auth = useContext(authContext)
+
   const [pokemonList, setPokemonList] = useState<Pokemon[] | null>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [formData, setFormData] = useState<Pokemon>({ pokemonId:0, name: '', type1: '', type2: '', cost: 0, imgUrl: '' });
   const [isEditing, setIsEditing] = useState<boolean>(false);
+
+ 
 
   // Fetch the Pokemon list
   const getPokemonList = () => {
@@ -99,7 +104,7 @@ function Pokemon_m() {
 
   return (
     <div className="listContainer">
-      <div id="pokemonList" className="list">
+      {auth?.role === "ADMIN" && <div id="pokemonList" className="list">
         <h3>Pokemon Management</h3>
         <table className="table table-hover">
           <thead>
@@ -146,7 +151,8 @@ function Pokemon_m() {
             ))}
           </tbody>
         </table>
-      </div>
+      </div>}
+      
 
       {/* Modal */}
       {showModal && (
@@ -190,3 +196,4 @@ function Pokemon_m() {
 }
 
 export default Pokemon_m;
+

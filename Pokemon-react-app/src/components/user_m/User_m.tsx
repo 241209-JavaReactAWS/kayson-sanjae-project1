@@ -2,11 +2,13 @@ import './user_m.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { User } from '../../interfaces/user';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { authContext } from '../../App';
 
 
 function User_m() {
+    const auth = useContext(authContext)
     const [userList, setUserList] = useState<User[] | null>([])
     const [showModal,setShowModal] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -99,8 +101,8 @@ function User_m() {
 
   return (
     <div className="listContainer">
-            
-        <div id="userList" className="list">
+
+        {auth?.role === "ADMIN" && <div id="userList" className="list">
             <h3>User Management(can edit user name and role below)</h3>
             <table className="table table-hover">
           <thead>
@@ -143,7 +145,8 @@ function User_m() {
             ))}
           </tbody>
         </table>
-        </div>
+        </div>}  
+        
 
 
         {showModal && (
