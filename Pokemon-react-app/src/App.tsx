@@ -9,6 +9,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import User_m from './components/user_m/User_m'
 import Collection from './components/collection/Collection'
+import Logout from './components/login/logout'
 
 
 export interface AuthContextType{
@@ -38,23 +39,7 @@ function App() {
   }, [useContext(authContext), navigate]);
   */
 
-  // get current user session info from backend
-  useEffect(()=>{
-    axios.get<User>('http://localhost:8080/users', {withCredentials: true})
-    .then((res) => {
-      setUserId(res.data.userId)
-      setUsername(res.data.username)
-      setRole(res.data.role as "USER" | "ADMIN")
-      setCoins(res.data.coins + coins);
-    })
-    .catch((err) => {
-      console.log("Guest user: " + err)
-      setUserId(-1)
-      setUsername('')
-      setRole('unauthenticated')
-      setCoins(0);
-    })
-  }, [])
+ 
 
   return (
     <authContext.Provider value={
@@ -74,7 +59,6 @@ function App() {
       <Routes>
         <Route path="/" element />
         <Route path='/login-register' element={<Login />} />
-        <Route path='/logout' element />
         <Route path='/pokemon-management' element={<Pokemon_m/>} />
         <Route path='/user-management' element={<User_m />} />
         <Route path='/user-management' element />
