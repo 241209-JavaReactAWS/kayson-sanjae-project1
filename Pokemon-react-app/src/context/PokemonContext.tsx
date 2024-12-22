@@ -16,13 +16,15 @@ export const PokemonProvider = ({ children} : React.PropsWithChildren) => {
   const [acquiredList, setAcquiredList] = useState([]);
   const [unacquiredList, setUnacquiredList] = useState([]);
 
+  // Get the lists of pokemons the user has acquired and has not acquired (WHEN THEY LOGIN)
   useEffect(() => {
     axios.get('http://localhost:8080/users/pokemons?status=acquired', { withCredentials: true })
-      .then((res) => setAcquiredList(res.data));
+      .then((res) => {console.log(res.data); setAcquiredList(res.data)});
     axios.get('http://localhost:8080/users/pokemons?status=unacquired', { withCredentials: true })
       .then((res) => setUnacquiredList(res.data));
   }, [auth?.userId]);
 
+  // Maps pokemons to pokemonProps
   const mapPokemonList = (pokemonList:Pokemon[], owned:boolean, variant:string) : PokemonProps[] => pokemonList.map((p) => ({
     id: p.pokemonId,
     name: p.name,
@@ -34,9 +36,11 @@ export const PokemonProvider = ({ children} : React.PropsWithChildren) => {
     variant,
   }) as PokemonProps);
 
+  // Intialize both lists
   const aList = mapPokemonList(acquiredList, true, 'collection');
   const bList = mapPokemonList(unacquiredList, false, 'collection');
 
+  // Combine and sort by pokemonProps Id
   const pokemonPropsList = useMemo(() => {
     const combinedList = [...aList, ...bList];
     return combinedList.sort((a, b) => a.id - b.id);
