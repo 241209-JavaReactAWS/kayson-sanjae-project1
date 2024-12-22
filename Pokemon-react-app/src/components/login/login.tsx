@@ -31,12 +31,16 @@ function Login() {
             {withCredentials: true}
         ).then((res) => {
             console.log(res.data)
+            auth?.setUserId(res.data.userId)
             auth?.setUsername(res.data.username)
             auth?.setRole(res.data.role)
+            auth?.setCoins(res.data.coins)
+            alert(`Login successfully.  UserId: ${res.data.userId} Username: ${res.data.username}   Role: ${res.data.role}  Coints: ${res.data.coins}`)
             console.log("Logined username and role:")
             console.log(auth?.username)
             console.log(auth?.role)
-            alert(`Login successfully. Username: ${res.data.username}   Role: ${res.data.role}`)
+            console.log(auth?.userId)
+            console.log(auth?.coins)
             setUsername("")
             setPassword("")
         }).catch((err) => {
@@ -82,9 +86,11 @@ function Login() {
     }
 
     useEffect(()=>{
-        console.log("Current username and role:")
+        console.log("Current Logined username and role:")
         console.log(auth?.username)
         console.log(auth?.role)
+        console.log(auth?.userId)
+        console.log(auth?.coins)
         /*axios.get("http://localhost:8080/users/username", {withCredentials: true})
         .then((res)=>{
             console.log(`From backend, user name ${res.data.username}`)
