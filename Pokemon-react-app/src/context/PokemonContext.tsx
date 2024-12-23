@@ -15,7 +15,7 @@ export const PokemonProvider = ({ children} : React.PropsWithChildren) => {
   const auth = useContext(authContext);
   const [acquiredList, setAcquiredList] = useState([]);
   const [unacquiredList, setUnacquiredList] = useState([]);
-  console.log(auth);
+  
   // Get the lists of pokemons the user has acquired and has not acquired (WHEN THEY LOGIN)
   useEffect(() => {
     axios.get('http://localhost:8080/users/pokemons?status=acquired', { withCredentials: true })

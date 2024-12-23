@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Pokemon } from "../../interfaces/pokemon";
 import { usePokemon } from "../../context/PokemonContext";
 import { FilterPokemonProps } from "../../interfaces/FilterPokemonProps";
+import './Filters.css'
 
 const types: string[] = [
   "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE", "FIGHTING",
@@ -69,12 +70,13 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
   }
 
   const handleDropdownToggle = () => {
-    setIsDropdownVisible(prevState => !prevState); // Toggle dropdown visibility
+    setIsDropdownVisible(prevState => !prevState); 
   };
 
   return (
-    <>
+    <div id="filter-container">
       <input
+        id="#search-box"
         type="text"
         placeholder="Type Pokémon's Name"
         value={query}
@@ -89,7 +91,7 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
       <button id="toggle-dropdown" onClick={handleDropdownToggle}>
         {isDropdownVisible ? "Hide Types" : "Show Types"}
       </button>
-      <select name="types" 
+      {isDropdownVisible && <select name="types" 
               id="type-filter" 
               multiple
               value={selectedTypes}
@@ -97,7 +99,7 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
           {types.map((type) => (
             <option key={type} value={type}>{type}</option>
           ))}
-        </select>
+        </select>}
 
       <input
         type="radio"
@@ -120,7 +122,7 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
         readOnly
       />
       <label htmlFor="unacquired-checkbox">unacquired</label>
-    </>
+    </div>
   );
 }
 

@@ -2,7 +2,9 @@ package com.revature.daos;
 
 import com.revature.models.Pokemon;
 import com.revature.models.UserPokemon;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -22,4 +24,3 @@ public interface UserPokemonDAO extends JpaRepository<UserPokemon, Integer> {
     @Query("from Pokemon p where p.id not in (select up.pokemon.id from UserPokemon up where up.user.id = :userId)")
     Set<Pokemon> findUnacquired(@Param("userId") int userId);
 }
-

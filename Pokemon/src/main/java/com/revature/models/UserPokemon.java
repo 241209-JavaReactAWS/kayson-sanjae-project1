@@ -9,14 +9,13 @@ public class UserPokemon{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userPokemonId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "pokemon_id")
     private Pokemon pokemon;
-
     public UserPokemon() {}
 
     public int getUserPokemonId() { return userPokemonId; }

@@ -25,6 +25,13 @@ public class UserPokemonService {
         this.pokemonService = pokemonService;
     }
 
+    /*
+    public void deletePokemonId(int pokemonId){
+        userPokemonDAO.deleteByPokemonId(pokemonId);
+    }
+
+     */
+
     public UserPokemon addUserPokemon(int userId, int pokemonId) throws UserNotFoundException, PokemonNotFoundException {
         User user = userService.getUserById(userId);
         Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
