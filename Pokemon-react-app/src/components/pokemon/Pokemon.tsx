@@ -2,21 +2,21 @@ import { PokemonProps } from "../../interfaces/pokemonProps";
 import { Card, CardMedia, CardContent, Typography, CardActions, Button, Stack } from "@mui/material"
 
 const typeImageMap: { [key: string]: string } = {
-    normal: "/assets/types/normal.png",
-    fire: "/assets/types/fire.png",
-    water: "/assets/types/water.png",
-    electric: "/assets/types/electric.png",
-    grass: "/assets/types/grass.png",
-    ice: "/assets/types/ice.png",
-    fighting: "/assets/types/fighting.png",
-    poison: "/assets/types/poison.png",
-    ground: "/assets/types/ground.png",
-    flying: "/assets/types/flying.png",
-    psychic: "/assets/types/psychic.png",
-    bug: "/assets/types/bug.png",
-    rock: "/assets/types/rock.png",
-    ghost: "/assets/types/ghost.png",
-    dragon: "/assets/types/dragon.png",
+    normal: "./assets/types/normal.png",
+    fire: "./assets/types/fire.png",
+    water: "./assets/types/water.png",
+    electric: "./assets/types/electric.png",
+    grass: "./assets/types/grass.png",
+    ice: "./assets/types/ice.png",
+    fighting: "./assets/types/fighting.png",
+    poison: "./assets/types/poison.png",
+    ground: "./assets/types/ground.png",
+    flying: "./assets/types/flying.png",
+    psychic: "./assets/types/psychic.png",
+    bug: "./assets/types/bug.png",
+    rock: "./assets/types/rock.png",
+    ghost: "./assets/types/ghost.png",
+    dragon: "./assets/types/dragon.png",
   };
 function Pokemon(props: PokemonProps){
     if(props.variant === "management"){
@@ -24,10 +24,7 @@ function Pokemon(props: PokemonProps){
     }
 
     if(props.variant === "shop"){
-        return (
-            <>
-            </>
-        )
+        return null
     }
 
     if(props.variant === "collection"){
@@ -44,12 +41,12 @@ function Pokemon(props: PokemonProps){
                     </Typography>
                     <Stack direction="row" spacing={1} justifyContent="center" sx={{ width: "100%" }}>
                         <img
-                            key={props.type1}
+                            key={`${props.name}-${props.type1}`}
                             src={typeImageMap[props.type1]}
                             style={{width: 30, height: 15}}
-                        />
+                        />,
                         <img
-                            key={props.type2}
+                            key={`${props.name}-${props.type2}`}
                             src={typeImageMap[props.type2]}
                             style={{width: 30, height: 15}}
                         />

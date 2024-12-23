@@ -16,25 +16,26 @@ public class UserShop {
     @JoinColumn(name = "userId")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "pokemon1_id")
     private Pokemon pokemon1;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "pokemon2_id")
     private Pokemon pokemon2;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "pokemon3_id")
     private Pokemon pokemon3;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "pokemon4_id")
     private Pokemon pokemon4;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "pokemon5_id")
     private Pokemon pokemon5;
+
 
     public UserShop() {}
 

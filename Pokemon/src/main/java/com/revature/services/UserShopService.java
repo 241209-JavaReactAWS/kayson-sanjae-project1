@@ -27,6 +27,17 @@ public class UserShopService {
         this.pokemonService = pokemonService;
     }
 
+    /*
+    public void removePokemonFromShop(int pokemonId) {
+        userShopDAO.deletePokemon1ById(pokemonId);
+        userShopDAO.deletePokemon2ById(pokemonId);
+        userShopDAO.deletePokemon3ById(pokemonId);
+        userShopDAO.deletePokemon4ById(pokemonId);
+        userShopDAO.deletePokemon5ById(pokemonId);
+    }
+
+     */
+
     public UserShop addUserShop(int userId) throws UserExistsException, UserNotFoundException {
         Optional<UserShop> optionalUserShop = userShopDAO.findByUserId(userId);
         if(optionalUserShop.isPresent()){
