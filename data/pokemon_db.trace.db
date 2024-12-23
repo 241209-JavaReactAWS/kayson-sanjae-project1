@@ -4,17 +4,6 @@ SELECT * FROMUSERS  POKEMONS [42000-224]
 2024-12-19 16:44:43.858051-05:00 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * [*]FROMUSERS  POKEMONS"; SQL statement:
 SELECT * FROMUSERS  POKEMONS [42000-224]
-<<<<<<< HEAD
-2024-12-22 20:12:59.644139-05:00 jdbc[13]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE FROM POKEMONS WEHRE [*]ID = 0"; SQL statement:
-DELETE FROM POKEMONS WEHRE ID = 0 [42000-224]
-2024-12-22 20:13:35.599634-05:00 jdbc[13]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE FROM POKEMONS WEHRE [*]POKEMON_ID= 0"; SQL statement:
-DELETE FROM POKEMONS WEHRE POKEMON_ID= 0 [42000-224]
-2024-12-22 20:14:03.542842-05:00 jdbc[13]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE FROM POKEMONS WEHRE [*]POKEMON_ID= 20"; SQL statement:
-DELETE FROM POKEMONS WEHRE POKEMON_ID= 20 [42000-224]
-=======
 2024-12-22 20:46:44.988258-05:00 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "POKEMONID" not found; SQL statement:
 delete from pokemons where pokemonId = 0 [42122-224]
@@ -77,4 +66,3 @@ delete from pokemons where pokemonId = 0 [42122-224]
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
 	at java.base/java.lang.Thread.run(Thread.java:840)
->>>>>>> 3d03e2bd55ed12973cd7bba5de2f3808e44a5187
