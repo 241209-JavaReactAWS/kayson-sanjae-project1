@@ -44,7 +44,6 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
       params.status = selectedStatus;
     }
 
-    console.log(selectedTypes)
     axios.get<Pokemon[]>("http://localhost:8080/users/pokemons", {
       params,
       withCredentials: true,
