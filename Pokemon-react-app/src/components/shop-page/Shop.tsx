@@ -27,7 +27,10 @@ function Shop() {
 
 
   return (
-    <>
+    <Box sx={{ 
+      backgroundColor: '#e0e0e0', // Light gray background
+      minHeight: '100vh', // Ensure it covers the full height of the viewport
+      padding: '20px'}}>
       <UserInfo/>
       <Box sx={{ 
         marginTop: '30px',
@@ -61,6 +64,8 @@ function Shop() {
       </Typography>
       </Box>
       <Grid2 container spacing={2} sx={{
+        border: '7px solid #2c3e50',
+        borderRadius: '15px',
         display: 'grid', 
         gridTemplateColumns: 'repeat(5, 1fr)',
         justifyContent: 'center', 
@@ -75,7 +80,7 @@ function Shop() {
           <Pokemon {...p} variant="shop" />
           </Grid2>))}
       </Grid2>
-    </>
+    </Box>
   );
 }
 

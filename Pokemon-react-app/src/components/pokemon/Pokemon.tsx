@@ -41,7 +41,7 @@ function Pokemon(props: PokemonProps) {
                 margin: '15px',
                 '&:hover': {
                     transform: 'scale(1.05)',
-                    border: '3px solid #f1e0a1'
+                    border: '3px solid #ff6f61'
                 }}}>
                 <CardMedia
                     sx={{

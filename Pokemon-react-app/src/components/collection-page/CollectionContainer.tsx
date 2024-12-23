@@ -4,6 +4,7 @@ import { PokemonContextType } from "../../interfaces/pokemonContextType";
 import { PokemonProps } from "../../interfaces/pokemonProps";
 import CollectionPokemons from "./CollectionPokemons";
 import Filters from "./Filters";
+import { Box } from "@mui/material";
 
 function Collection() {
   const { pokemonPropsList } : PokemonContextType = usePokemon();
@@ -19,10 +20,12 @@ function Collection() {
   };
 
   return (
-    <div>
-    <Filters {...filterPokemonProps}/>
-    <CollectionPokemons {...filterPokemonProps}/>
-    </div>
+    <Box sx={{
+      backgroundColor: '#e0e0e0',
+    }}>
+      <Filters {...filterPokemonProps}/>
+      <CollectionPokemons {...filterPokemonProps}/>
+    </Box>
   );
 }
 

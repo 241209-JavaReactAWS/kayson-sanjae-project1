@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Pokemon } from "../../interfaces/pokemon";
 import { usePokemon } from "../../context/PokemonContext";
 import { FilterPokemonProps } from "../../interfaces/FilterPokemonProps";
 import './Filters.css'
+import { Box, Button, Checkbox, FormControl, FormControlLabel, ListItemText, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 
 const types: string[] = [
   "NORMAL", "FIRE", "WATER", "ELECTRIC", "GRASS", "ICE", "FIGHTING",
@@ -14,9 +15,9 @@ const types: string[] = [
 function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
   const { pokemonPropsList } = usePokemon() || { pokemonPropsList: [] };
   const [query, setQuery] = useState<string>("");
-  const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<"acquired" | "unacquired" | null>(null);
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -56,19 +57,30 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
     }).catch((error) => (console.log("Error fetching Pokémon with selected filters", error)))
   };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValues = Array.from(e.target.selectedOptions, (option) => option.value);
+  const handleSelectChange = (e: SelectChangeEvent<string[]>) => {
+    const selectedValues = e.target.value as string[]; // Safely cast value to string[]
     setSelectedTypes(selectedValues);
     setQuery("");
   };
 
-  const handleRadioChange = (status: string) => {
+  const handleRadioChange = (status: SetStateAction<"acquired" | "unacquired" | null>) => {
     setSelectedStatus(status === selectedStatus ? null : status);
     setQuery("");
   }
 
-  const handleDropdownToggle = () => {
-    setIsDropdownVisible(prevState => !prevState); 
+  const handleDropdownOpen = () => {
+    setIsDropdownOpen(true);
+  };
+
+  const handleDropdownClose = () => {
+    setIsDropdownOpen(false);
+  };
+
+  const renderSelectedText = () => {
+    if (selectedTypes.length === 0) {
+      return "Show Items"; 
+    }
+    return `${selectedTypes.length} Type${selectedTypes.length > 1 ? 's' : ''} Selected`; // Text for selected types
   };
 
   useEffect(() => {
@@ -76,55 +88,135 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
   }, [selectedTypes, selectedStatus]);
 
   return (
-    <div id="filter-container">
-      <input
-        id="#search-box"
+    
+    <Box sx={{
+      backgroundColor: '#e0e0e0',
+      border: '5px solid #2c3e50',
+      borderRadius: '8px', 
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: 'auto',
+      width: '97%',
+      background: '#2c3e50',
+
+    }}>
+    <Box sx={{
+      border: '1px solid #e0e0e0',
+      borderRadius: '8px',
+      display: 'inline-flex',
+      width: '100%',
+
+    }}>
+      <TextField
         type="text"
         placeholder="Type Pokémon's Name"
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
           setSelectedStatus(null);
-          setSelectedTypes([]);
-        }}
+          setSelectedTypes([]);}}
         onKeyDown={handleKeyDown}
-      />
+        variant="outlined"
+        margin="normal"
+        sx={{
+          '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+              border: 'none'}},
+          '& .MuiOutlinedInput-root .MuiInputBase-input': {
+              color: '#e0e0e0'},
+          '& .MuiOutlinedInput-root .MuiInputBase-input::placeholder': {
+              color: '#e0e0e0'},
+          color: '#e0e0e0',
+          height: '100%',
+          width: '400px',
+          backgroundColor:  '#2c3e50'}}/>
+        
+        <Select multiple
+                value={selectedTypes}
+                onChange={handleSelectChange}
+                autoWidth
+                onOpen={handleDropdownOpen}
+                onClose={handleDropdownClose}
+                displayEmpty={true}
+                renderValue={() => <span style={{color: '#e0e0e0'}}>
+                  {isDropdownOpen ? "Hide Types" : "Show Types"}
+                </span>}
+                sx={{
+                  boxShadow: 'none',
+                  border:"none",
+                  borderRadius: "0",
+                  backgroundColor:'#2c3e50',
+                  '.MuiOutlinedInput-notchedOutline': { border: 0 }
+                }}>
+            {types.map((type) => (
+              <MenuItem 
+                key={type}
+                value={type}
+                selected={selectedTypes.includes(type)}
+                sx={{
+                  backgroundColor: selectedTypes.includes(type) ? '#f1e0a1' : 'transparent',}}>
+                {type}
+              </MenuItem>
+            ))}
+        </Select>
+        <Radio
+          name="checkbox"
+          value="acquired"
+          checked={selectedStatus==="acquired"}
+          onClick={() => handleRadioChange("acquired")}
+          readOnly
+          sx={{
+            borderRadius: '0px',
+            backgroundColor: '#2c3e50',
+            color: '#e0e0e0',
+            padding: "12px",
+            '&:hover': {
+              backgroundColor: '#2c3e50',
+            }
+          }}
+        />
+        <Typography
+          sx={{
+            fontFamily: '"Varela Round", sans-serif',
+            display: 'flex',
+            alignItems: 'center', 
+            justifyContent: 'center',
+            backgroundColor: '#2c3e50',
+            color: '#e0e0e0',
+            padding: "10px"
+          }}
+        >acquired</Typography>
+        <Radio
+          name="checkbox"
+          value="unacquired"
+          checked={selectedStatus==="unacquired"}
+          onClick={() => handleRadioChange("unacquired")}
+          readOnly
+          sx={{
+            borderRadius: '0px',
+            backgroundColor: '#2c3e50',
+            color: '#e0e0e0',
+            padding: "12px",
+            '&:hover': {
+              backgroundColor: '#2c3e50',
+            }
+          }}
+        />
+        <Typography
+          sx={{
+            fontFamily: '"Varela Round", sans-serif',
+            backgroundColor: '#2c3e50',
+            color: '#e0e0e0',
+            display: 'flex',
+            alignItems: 'center', 
+            justifyContent: 'center',
+            padding: "10px"
+          }}
+        >unacquired</Typography>
 
-      <button id="toggle-dropdown" onClick={handleDropdownToggle}>
-        {isDropdownVisible ? "Hide Types" : "Show Types"}
-      </button>
-      {isDropdownVisible && <select name="types" 
-              id="type-filter" 
-              multiple
-              value={selectedTypes}
-              onChange={handleSelectChange}>
-          {types.map((type) => (
-            <option key={type} value={type} className={selectedTypes.includes(type) ? "selected-option" : ""}>{type}</option>
-          ))}
-        </select>}
-
-      <input
-        type="radio"
-        id="acquired-checkbox"
-        name="checkbox"
-        value="acquired"
-        checked={selectedStatus === "acquired"}
-        onClick={() => handleRadioChange("acquired")}
-        readOnly
-      />
-      <label htmlFor="acquired-checkbox">acquired</label>
-
-      <input
-        type="radio"
-        id="unacquired-checkbox"
-        name="checkbox"
-        value="unacquired"
-        checked={selectedStatus === "unacquired"}
-        onClick={() => handleRadioChange("unacquired")}
-        readOnly
-      />
-      <label htmlFor="unacquired-checkbox">unacquired</label>
-    </div>
+    </Box>
+    </Box>
   );
 }
 
