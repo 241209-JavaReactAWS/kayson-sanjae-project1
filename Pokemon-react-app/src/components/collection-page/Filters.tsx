@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pokemon } from "../../interfaces/pokemon";
 import { usePokemon } from "../../context/PokemonContext";
 import { FilterPokemonProps } from "../../interfaces/FilterPokemonProps";
@@ -44,6 +44,7 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
       params.status = selectedStatus;
     }
 
+    console.log(selectedTypes)
     axios.get<Pokemon[]>("http://localhost:8080/users/pokemons", {
       params,
       withCredentials: true,
@@ -52,7 +53,7 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
       const filteredPokemonProps = pokemonPropsList.filter((pokemonProp) =>
         fetchedPokemonIds.includes(pokemonProp.id)
       );
-      updateFilteredPokemons(filteredPokemonProps); // Update filtered Pokémon list
+      updateFilteredPokemons(filteredPokemonProps); 
     }).catch((error) => (console.log("Error fetching Pokémon with selected filters", error)))
   };
 
@@ -60,18 +61,20 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
     const selectedValues = Array.from(e.target.selectedOptions, (option) => option.value);
     setSelectedTypes(selectedValues);
     setQuery("");
-    handleFilterChange();
   };
 
   const handleRadioChange = (status: string) => {
     setSelectedStatus(status === selectedStatus ? null : status);
     setQuery("");
-    handleFilterChange();
   }
 
   const handleDropdownToggle = () => {
     setIsDropdownVisible(prevState => !prevState); 
   };
+
+  useEffect(() => {
+    handleFilterChange();
+  }, [selectedTypes, selectedStatus]);
 
   return (
     <div id="filter-container">
@@ -97,7 +100,7 @@ function Filters({ updateFilteredPokemons }: FilterPokemonProps) {
               value={selectedTypes}
               onChange={handleSelectChange}>
           {types.map((type) => (
-            <option key={type} value={type}>{type}</option>
+            <option key={type} value={type} className={selectedTypes.includes(type) ? "selected-option" : ""}>{type}</option>
           ))}
         </select>}
 

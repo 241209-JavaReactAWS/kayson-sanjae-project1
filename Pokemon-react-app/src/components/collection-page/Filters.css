@@ -16,8 +16,9 @@
 #type-filter {
     position: absolute;
 }
-#type-filter:focus option:checked{
-    background-color: brown;
+
+.selected-option{
+    background-color: blueviolet;
 }
 
 #acquired-checkbox {

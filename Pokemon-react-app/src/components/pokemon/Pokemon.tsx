@@ -1,23 +1,10 @@
 import { PokemonProps } from "../../interfaces/pokemonProps";
 import { Card, CardMedia, CardContent, Typography, CardActions, Button, Stack } from "@mui/material"
+import normalIcon from "./assets/types/normal.png";
+import fireIcon from "./assets/types/fire.png";
+import waterIcon from "./assets/types/water.png";
 
-const typeImageMap: { [key: string]: string } = {
-    normal: "./assets/types/normal.png",
-    fire: "./assets/types/fire.png",
-    water: "./assets/types/water.png",
-    electric: "./assets/types/electric.png",
-    grass: "./assets/types/grass.png",
-    ice: "./assets/types/ice.png",
-    fighting: "./assets/types/fighting.png",
-    poison: "./assets/types/poison.png",
-    ground: "./assets/types/ground.png",
-    flying: "./assets/types/flying.png",
-    psychic: "./assets/types/psychic.png",
-    bug: "./assets/types/bug.png",
-    rock: "./assets/types/rock.png",
-    ghost: "./assets/types/ghost.png",
-    dragon: "./assets/types/dragon.png",
-  };
+
 function Pokemon(props: PokemonProps){
     if(props.variant === "management"){
         return null
@@ -42,12 +29,12 @@ function Pokemon(props: PokemonProps){
                     <Stack direction="row" spacing={1} justifyContent="center" sx={{ width: "100%" }}>
                         <img
                             key={`${props.name}-${props.type1}`}
-                            src={typeImageMap[props.type1]}
+                            src={`/assets/types/${props.type1.toLowerCase()}.png`}
                             style={{width: 30, height: 15}}
-                        />,
-                        <img
+                        />
+                        props.type2 && <img
                             key={`${props.name}-${props.type2}`}
-                            src={typeImageMap[props.type2]}
+                            src={`/assets/types/${props.type2.toLowerCase()}.png`}
                             style={{width: 30, height: 15}}
                         />
                     </Stack>
