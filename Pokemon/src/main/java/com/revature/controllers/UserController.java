@@ -44,8 +44,7 @@ public class UserController {
 
         try{
             User userToBeReturned = userService.getUserById((int)session.getAttribute("userId"));
-            return ResponseEntity.status(302).header("Location", "/" + userToBeReturned.getUserId())
-                    .body(userToBeReturned);
+            return ResponseEntity.ok(userToBeReturned);
         }catch (UserNotFoundException e){
             return ResponseEntity.status(404).build();
         }
@@ -59,8 +58,7 @@ public class UserController {
 
         try{
             User userToBeReturned = userService.getUserByUsername((String)session.getAttribute("username"));
-            return ResponseEntity.status(302).header("Location", "/" + userToBeReturned.getUserId())
-                    .body(userToBeReturned);
+            return ResponseEntity.ok(userToBeReturned);
         }catch(UserNotFoundException e){
             return ResponseEntity.status(404).build();
         }

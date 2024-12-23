@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePokemon } from "../../context/PokemonContext";
 import { PokemonContextType } from "../../interfaces/pokemonContextType";
 import { PokemonProps } from "../../interfaces/pokemonProps";
 import CollectionPokemons from "./CollectionPokemons";
 import Filters from "./Filters";
-import './CollectionContainer.css'
 
 function Collection() {
   const { pokemonPropsList } : PokemonContextType = usePokemon();
@@ -20,7 +19,7 @@ function Collection() {
   };
 
   return (
-    <div className="collection-container">
+    <div>
     <Filters {...filterPokemonProps}/>
     <CollectionPokemons {...filterPokemonProps}/>
     </div>

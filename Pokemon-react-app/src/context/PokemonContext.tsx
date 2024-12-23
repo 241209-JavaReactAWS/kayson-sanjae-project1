@@ -22,7 +22,7 @@ export const PokemonProvider = ({ children} : React.PropsWithChildren) => {
       .then((res) => setAcquiredList(res.data));
     axios.get('http://localhost:8080/users/pokemons?status=unacquired', { withCredentials: true })
       .then((res) => setUnacquiredList(res.data));
-  }, [auth?.userId]);
+  }, [auth?.userId, auth?.coins]);
 
   // Maps pokemons to pokemonProps
   const mapPokemonList = (pokemonList:Pokemon[], owned:boolean, variant:string) : PokemonProps[] => pokemonList.map((p) => ({

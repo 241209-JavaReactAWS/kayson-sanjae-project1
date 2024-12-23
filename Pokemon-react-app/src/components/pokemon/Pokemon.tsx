@@ -1,7 +1,29 @@
+import { useContext } from "react";
+import { authContext } from "../../App";
 import { PokemonProps } from "../../interfaces/pokemonProps";
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, Stack, Badge, Box } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Button, Stack, Box } from "@mui/material";
+import axios from "axios";
+import { User } from "../../interfaces/user";
 
 function Pokemon(props: PokemonProps) {
+    const auth = useContext(authContext);
+    if(!auth){
+        throw new Error("Authentication missing");
+    }
+
+    const handleBuyClick = async (pokemonId: number, cost: number) => {
+        axios.get<User>("http://localhost:8080/users/id", {withCredentials:true}
+        ).then((res) => {
+            const user = res.data;
+            user.coins = user.coins - cost;
+            axios.post(`http://localhost:8080/users/pokemons?pokemonId=${pokemonId}`, {},{withCredentials:true}
+            ).then(() => {
+                axios.put<User>("http://localhost:8080/users/edituser", user, {withCredentials:true}
+                ).then((res) => auth.setCoins(res.data.coins)).catch(() => console.log("Update was not succesful"))
+            }).catch((error) => console.log("Something went wrong when updating user-pokemon relatioinship", error))
+        }).catch(() => console.log("Unable to Buy Pokemon"))
+    }
+    
     if (props.variant === "management") {
         return null;
     }
@@ -58,8 +80,9 @@ function Pokemon(props: PokemonProps) {
                                     '&:hover': {
                                         backgroundColor: '#f2d94f'
                                     }}}
-                                onClick ={() => alert('ree')}>
-                            BUY
+                                onClick ={() => handleBuyClick(props.id, props.cost)}
+                                disabled={auth.coins < props.cost || props.owned}>
+                            {props.owned ? "Owned" : "Buy"}
                         </Button>
                         <Box sx={{ display: 'flex'}}>
                             <img src="/src/assets/coin.png"
