@@ -1,13 +1,12 @@
 package com.revature.services;
 
 import com.revature.daos.UserDAO;
-import com.revature.exceptions.pokemon.InvalidPokemonException;
-import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.exceptions.user.InvalidCredentialsException;
+import com.revature.exceptions.user.InvalidUserException;
 import com.revature.exceptions.user.UserExistsException;
 import com.revature.exceptions.user.UserNotFoundException;
-import com.revature.models.Pokemon;
 import com.revature.models.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +16,28 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserDAO userDAO;
+    private final UserShopService userShopService;
+
     @Autowired
-    public UserService(UserDAO userDAO){
+    public UserService(UserDAO userDAO, UserShopService userShopService){
         this.userDAO = userDAO;
+        this.userShopService = userShopService;
     }
 
-    public User registerUser(User user) throws UserExistsException {
+    @Transactional
+    public User registerUser(User user) throws UserExistsException, InvalidUserException, UserNotFoundException {
         Optional<User> optionalUser = userDAO.findByUsername(user.getUsername());
         if(optionalUser.isPresent()){
             throw new UserExistsException();
         }
-        // todo: password specifications
+
+        String password = user.getPassword();
+        String regex = "^(?=.*\\d)(?=.*[A-Z])(?=.*[!@#$%^&*(),.?\":{}|<>]).+$";
+        if(password.length() < 8 || !password.matches(regex)){
+            throw new InvalidUserException();
+        }
+
+        userShopService.addUserShop(user.getUserId());
         return userDAO.save(user);
     }
 
@@ -37,6 +47,15 @@ public class UserService {
             throw new InvalidCredentialsException();
         }
         return optionalUser.get();
+    }
+
+    public User editUser(User user) throws UserNotFoundException {
+        User exists = getUserById(user.getUserId());
+        return userDAO.save(user);
+    }
+
+    public void deleteUser(int id){
+        userDAO.deleteById(id);
     }
 
     public User getUserByUsername(String username) throws UserNotFoundException {
@@ -57,20 +76,5 @@ public class UserService {
 
     public List<User> findAllUsers(){
         return userDAO.findAll();
-    }
-
-    public void deleteUser(int id){
-        userDAO.deleteById(id);
-    }
-
-    public User editUser(User user) throws UserNotFoundException {
-        if(user == null){
-            throw new UserNotFoundException();
-        }
-
-        if(userDAO.findById(user.getUserId()).isEmpty()){
-            throw new UserNotFoundException();
-        }
-        return userDAO.save(user);
     }
 }

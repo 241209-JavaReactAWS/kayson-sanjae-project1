@@ -1,6 +1,6 @@
 package com.revature.services;
 
-import com.revature.daos.PokemonDao;
+import com.revature.daos.PokemonDAO;
 import com.revature.exceptions.pokemon.InvalidPokemonException;
 import com.revature.exceptions.pokemon.PokemonIdExistsException;
 import com.revature.exceptions.pokemon.PokemonNameExistException;
@@ -14,42 +14,26 @@ import java.util.*;
 
 @Service
 public class PokemonService {
-    private final PokemonDao pokemonDao;
+    private final PokemonDAO pokemonDAO;
 
     @Autowired
-    public PokemonService(PokemonDao pokemonDao){
-        this.pokemonDao = pokemonDao;
+    public PokemonService(PokemonDAO pokemonDAO){
+        this.pokemonDAO = pokemonDAO;
     }
 
-    public Pokemon savePokemon(Pokemon pokemon) throws PokemonIdExistsException, PokemonNameExistException, InvalidPokemonException {
+    public Pokemon addPokemon(Pokemon pokemon) throws PokemonIdExistsException, PokemonNameExistException, InvalidPokemonException {
         if(pokemon == null){
             throw new InvalidPokemonException();
         }
 
-        if(pokemonDao.findById(pokemon.getPokemonId()).isPresent()){
+        if(pokemonDAO.findById(pokemon.getPokemonId()).isPresent()){
             throw new PokemonIdExistsException();
         }
 
-        if(pokemonDao.findByName(pokemon.getName()).isPresent()){
+        if(pokemonDAO.findByName(pokemon.getName()).isPresent()){
             throw new PokemonNameExistException();
         }
-        return pokemonDao.save(pokemon);
-    }
-
-    public Pokemon getPokemonById(int id) throws PokemonNotFoundException {
-        Optional<Pokemon> optionalPokemon = pokemonDao.findById(id);
-        if(optionalPokemon.isEmpty()){
-            throw new PokemonNotFoundException();
-        }
-        return optionalPokemon.get();
-    }
-
-    public List<Pokemon> getAllPokemons() {
-        return pokemonDao.findAll();
-    }
-
-    public void deletePokemon(int id){
-        pokemonDao.deleteById(id);
+        return pokemonDAO.save(pokemon);
     }
 
     public Pokemon editPokemon(Pokemon pokemon) throws InvalidPokemonException, PokemonNotFoundException {
@@ -57,30 +41,45 @@ public class PokemonService {
             throw new InvalidPokemonException();
         }
 
-        if(pokemonDao.findById(pokemon.getPokemonId()).isEmpty()){
+        if(pokemonDAO.findById(pokemon.getPokemonId()).isEmpty()){
             throw new PokemonNotFoundException();
         }
-        return pokemonDao.save(pokemon);
+        return pokemonDAO.save(pokemon);
     }
 
-    public Pokemon getPokemonByName(String name) throws PokemonNotFoundException {
-        Optional<Pokemon> optionalPokemon = pokemonDao.findByName(name);
+    public void deletePokemon(int id){
+        pokemonDAO.deleteById(id);
+    }
+
+    public Pokemon getPokemonById(int id) throws PokemonNotFoundException {
+        Optional<Pokemon> optionalPokemon = pokemonDAO.findById(id);
         if(optionalPokemon.isEmpty()){
             throw new PokemonNotFoundException();
         }
         return optionalPokemon.get();
     }
 
+    public Pokemon getPokemonByName(String name) throws PokemonNotFoundException {
+        Optional<Pokemon> optionalPokemon = pokemonDAO.findByName(name);
+        if(optionalPokemon.isEmpty()){
+            throw new PokemonNotFoundException();
+        }
+        return optionalPokemon.get();
+    }
+
+    public List<Pokemon> getAllPokemons() {
+        return pokemonDAO.findAll();
+    }
 
     public Set<Pokemon> getFiveRandom(){
-        return pokemonDao.findFiveRandom();
+        return pokemonDAO.findFiveRandom();
     }
 
     public Set<Pokemon> getPokemonByTypes(List<PokemonType> types){
         Set<Pokemon> set = new HashSet<>();
 
         for(PokemonType type : types){
-            set.addAll(pokemonDao.findByType(type));
+            set.addAll(pokemonDAO.findByType(type));
         }
         return set;
     }

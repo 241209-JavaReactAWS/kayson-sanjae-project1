@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface PokemonDao extends JpaRepository<Pokemon, Integer> {
+public interface PokemonDAO extends JpaRepository<Pokemon, Integer> {
 
     Optional<Pokemon> findByName(String name);
 
