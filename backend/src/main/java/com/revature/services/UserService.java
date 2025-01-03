@@ -8,6 +8,7 @@ import com.revature.exceptions.user.UserNotFoundException;
 import com.revature.models.User;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class UserService {
     private final UserShopService userShopService;
 
     @Autowired
-    public UserService(UserDAO userDAO, UserShopService userShopService){
+    public UserService(UserDAO userDAO, @Lazy UserShopService userShopService){
         this.userDAO = userDAO;
         this.userShopService = userShopService;
     }

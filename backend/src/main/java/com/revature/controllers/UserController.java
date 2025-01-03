@@ -46,24 +46,24 @@ public class UserController {
         return ResponseEntity.ok(userToBeReturned);
     }
 
-    @GetMapping
-    public ResponseEntity<User> getUserByUserName(HttpSession session, @RequestParam(value = "username") String username) throws UserNotFoundException {
-        if (session.isNew() || session.getAttribute("username") == null){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    @GetMapping()
+    public ResponseEntity<?> getUsers(HttpSession session, @RequestParam(value = "username", required = false) String username) throws UserNotFoundException {
+        if (username != null) {
+            if (session.isNew() || session.getAttribute("username") == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            String sessionUsername = (String) session.getAttribute("username");
+            if (!sessionUsername.equals(username)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+
+            User userToBeReturned = userService.getUserByUsername(username);
+            return ResponseEntity.ok(userToBeReturned);
         }
 
-        String sessionUsername = (String) session.getAttribute("username");
-        if (!sessionUsername.equals(username)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        User userToBeReturned = userService.getUserByUsername(sessionUsername);
-        return ResponseEntity.ok(userToBeReturned);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(){
-        return ResponseEntity.ok(userService.findAllUsers());
+        List<User> allUsers = userService.findAllUsers();
+        return ResponseEntity.ok(allUsers);
     }
 
     @PostMapping("/login")
@@ -81,14 +81,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<User>> getALlUser(HttpSession session){
-        if (session.isNew() || session.getAttribute("username") == null){
-            return ResponseEntity.status(401).build();
-        }
-        List<User> users = userService.findAllUsers();
-        return ResponseEntity.ok(users);
-    }
 
     @DeleteMapping("/{userid}")
     public ResponseEntity<User> deleteUserById(@PathVariable int userid, HttpSession session) {
