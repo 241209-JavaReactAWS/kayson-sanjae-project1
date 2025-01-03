@@ -1,0 +1,54 @@
+.userInfo{
+    width: 85px;
+    height: 50px;
+    border: 2px solid black;
+    text-align: center;
+    line-height: 50px;
+}
+
+#user-info-container > div{
+    display: flex;
+    margin-bottom: 100px;
+}
+
+#daily-shop-title{
+    text-align: center;
+}
+
+.pokemon{
+    position: relative;
+    border: 2px solid black;
+    border-radius: 10px;
+    text-align: center;
+    padding: 10px;
+    margin: 20px;
+    width: 120px;
+    height: 220px;
+}
+
+#shop-container{
+    border: 2px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.top-right{
+    position: absolute;
+    right: 5px;
+    top: 0px;
+    margin: 5px;
+}
+
+.center{
+    position: relative;
+    vertical-align: auto;
+}
+
+.bottom{
+    position: absolute;
+    bottom: 0;
+}

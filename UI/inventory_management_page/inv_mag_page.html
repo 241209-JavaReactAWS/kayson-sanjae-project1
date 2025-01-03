@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Management Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="./inv_mag_page.css">
+</head>
+  <body>
+
+    <div id="listContainer">
+        <div id="pokemonList" class="list">
+            <h3>Pokemon List(can edit Pokemon name, price, type and etc below)</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Type1</th>
+                    <th scope="col">Type2</th>
+                    <th scope="col">Price</th>
+                </tr>
+                </thead>
+    
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Pokemon1</td>
+                    <td>FIRE</td>
+                    <td>GHOST</td>
+                    <td>20</td>
+                    <th ><button>Edit</button></th>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Pokemon2</td>
+                    <td>WATER</td>
+                    <td>ELECTRIC</td>
+                    <td>30</td>
+                    <th><button>Edit</button></th>
+                </tr>
+                
+                </tbody>
+            </table>
+    
+            
+        </div>
+    
+        <div id="userList" class="list">
+            <h3>User Management(can edit user name and role below)</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Role</th>
+                </tr>
+                </thead>
+    
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Admin1</td>
+                    <td>admin</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Nomal user name1</td>
+                    <td>normal</td>
+                </tr>
+                
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>
