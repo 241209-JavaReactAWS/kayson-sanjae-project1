@@ -1,9 +1,16 @@
 package com.revature.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
-@Table(name = "userPokemons")
+@Table(name = "user_pokemons")
 public class UserPokemon{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,17 +23,4 @@ public class UserPokemon{
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "pokemon_id")
     private Pokemon pokemon;
-    public UserPokemon() {}
-
-    public int getUserPokemonId() { return userPokemonId; }
-
-    public void setUserPokemonId(int userPokemonId) { this.userPokemonId = userPokemonId; }
-
-    public User getUser() { return user; }
-
-    public void setUser(User user) { this.user = user; }
-
-    public Pokemon getPokemon() { return pokemon;}
-
-    public void setPokemon(Pokemon pokemon) { this.pokemon = pokemon; }
 }
