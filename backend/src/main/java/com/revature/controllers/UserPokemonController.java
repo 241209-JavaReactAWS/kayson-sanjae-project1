@@ -25,24 +25,20 @@ public class UserPokemonController {
     }
 
     @PostMapping()
-    public ResponseEntity<UserPokemon> addUserPokemon(HttpSession session, @RequestParam int pokemonId){
+    public ResponseEntity<UserPokemon> addUserPokemon(HttpSession session, @RequestParam int pokemonId) throws UserNotFoundException, PokemonNotFoundException {
         if(session.isNew() || session.getAttribute("userId") == null){
             return ResponseEntity.badRequest().build();
         }
 
-        try{
-            UserPokemon userPokemon = userPokemonService.addUserPokemon((int)session.getAttribute("userId"), pokemonId);
-            return ResponseEntity.ok(userPokemon);
-        } catch (UserNotFoundException | PokemonNotFoundException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        UserPokemon userPokemon = userPokemonService.addUserPokemon((int)session.getAttribute("userId"), pokemonId);
+        return ResponseEntity.ok(userPokemon);
     }
 
     @GetMapping()
     public ResponseEntity<List<Pokemon>> getPokemonsByFilters(HttpSession session,
                                                               @RequestParam(value = "name", required = false) String pokemonName,
                                                               @RequestParam(value = "types", required = false) List<PokemonType> types,
-                                                              @RequestParam(value = "status", required = false) String status){
+                                                              @RequestParam(value = "status", required = false) String status) throws PokemonNotFoundException {
         if(session.isNew() || session.getAttribute("username") == null){
             return ResponseEntity.badRequest().build();
         }
@@ -51,15 +47,10 @@ public class UserPokemonController {
         types = types == null ? Collections.emptyList() : types;
         int statusInt = mapStatusToInt(status);
 
-        try{
-            List<Pokemon> pokemons = new ArrayList<>(userPokemonService.
-                    getFilterPokemons((int)session.getAttribute("userId"), pokemonName,types, statusInt));
-            pokemons.sort(Comparator.comparingInt(Pokemon::getPokemonId));
-            return ResponseEntity.ok(pokemons);
-        }catch(PokemonNotFoundException e){
-            return ResponseEntity.status(404).build();
-        }
-
+        List<Pokemon> pokemons = new ArrayList<>(userPokemonService.
+                getFilterPokemons((int)session.getAttribute("userId"), pokemonName, types, statusInt));
+        pokemons.sort(Comparator.comparingInt(Pokemon::getPokemonId));
+        return ResponseEntity.ok(pokemons);
     }
 
     private int mapStatusToInt(String status){

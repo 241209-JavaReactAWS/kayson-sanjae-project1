@@ -1,14 +1,14 @@
 package com.revature.controllers;
 
-import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.exceptions.user.InvalidCredentialsException;
+import com.revature.exceptions.user.InvalidUserException;
 import com.revature.exceptions.user.UserExistsException;
 import com.revature.exceptions.user.UserNotFoundException;
-import com.revature.models.Pokemon;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,42 +26,39 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerHandler(@RequestBody User user){
-        try{
-            User newUser = userService.registerUser(user);
-            return ResponseEntity.ok(user);
-        }catch(UserExistsException e){
-            return ResponseEntity.status(403).build();
-        }
+    public ResponseEntity<User> registerHandler(@RequestBody User user) throws UserNotFoundException, UserExistsException, InvalidUserException {
+        User newUser = userService.registerUser(user);
+        return ResponseEntity.ok(user);
     }
 
-
-    @GetMapping("/id")
-    public ResponseEntity<User> getUserInfoHandler(HttpSession session) {
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserInfoHandler(HttpSession session, @PathVariable int userId) throws UserNotFoundException {
         if (session.isNew() || session.getAttribute("userId") == null){
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        try{
-            User userToBeReturned = userService.getUserById((int)session.getAttribute("userId"));
-            return ResponseEntity.ok(userToBeReturned);
-        }catch (UserNotFoundException e){
-            return ResponseEntity.status(404).build();
+        int sessionUserId = (int) session.getAttribute("userId");
+        if (sessionUserId != userId) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+
+        User userToBeReturned = userService.getUserById(sessionUserId);
+        return ResponseEntity.ok(userToBeReturned);
     }
 
-    @GetMapping("/username")
-    public ResponseEntity<User> getUserByUserName(HttpSession session) {
+    @GetMapping
+    public ResponseEntity<User> getUserByUserName(HttpSession session, @RequestParam(value = "username") String username) throws UserNotFoundException {
         if (session.isNew() || session.getAttribute("username") == null){
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        try{
-            User userToBeReturned = userService.getUserByUsername((String)session.getAttribute("username"));
-            return ResponseEntity.ok(userToBeReturned);
-        }catch(UserNotFoundException e){
-            return ResponseEntity.status(404).build();
+        String sessionUsername = (String) session.getAttribute("username");
+        if (!sessionUsername.equals(username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+
+        User userToBeReturned = userService.getUserByUsername(sessionUsername);
+        return ResponseEntity.ok(userToBeReturned);
     }
 
     @GetMapping
@@ -70,16 +67,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> loginHandler(@RequestBody User user, HttpSession session) {
-        try {
-            User returningUser = userService.loginUser(user.getUsername(), user.getPassword());
-            session.setAttribute("username", returningUser.getUsername());
-            session.setAttribute("userId", returningUser.getUserId());
-            session.setAttribute("role", returningUser.getRole());
-            return ResponseEntity.ok(returningUser);
-        } catch (InvalidCredentialsException e) {
-            return ResponseEntity.status(401).build();
-        }
+    public ResponseEntity<User> loginHandler(@RequestBody User user, HttpSession session) throws InvalidCredentialsException {
+        User returningUser = userService.loginUser(user.getUsername(), user.getPassword());
+        session.setAttribute("username", returningUser.getUsername());
+        session.setAttribute("userId", returningUser.getUserId());
+        session.setAttribute("role", returningUser.getRole());
+        return ResponseEntity.ok(returningUser);
     }
 
     @PostMapping("/logout")
@@ -88,7 +81,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/allusers")
+    @GetMapping
     public ResponseEntity<List<User>> getALlUser(HttpSession session){
         if (session.isNew() || session.getAttribute("username") == null){
             return ResponseEntity.status(401).build();
@@ -97,21 +90,33 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @DeleteMapping("/deleteUser/{userid}")
-    public ResponseEntity<User> deleteUserById(@PathVariable int userid) {
+    @DeleteMapping("/{userid}")
+    public ResponseEntity<User> deleteUserById(@PathVariable int userid, HttpSession session) {
+        if (session.isNew() || session.getAttribute("userId") == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        int sessionUserId = (int) session.getAttribute("userId");
+        if (sessionUserId != userid) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         userService.deleteUser(userid);
         return ResponseEntity.ok(null);
     }
 
-    @PutMapping("/edituser")
-    public ResponseEntity<User> editUser(HttpSession session, @RequestBody User user){
-        try{
-            User returnedUser = userService.editUser(user);
-            return ResponseEntity.status(200).body(returnedUser);
-        }catch(Exception e){
-            return ResponseEntity.badRequest().build();
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> editUser(HttpSession session, @PathVariable int userId, @RequestBody User user) throws UserNotFoundException {
+        if (session.isNew() || session.getAttribute("userId") == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
+        int sessionUserId = (int) session.getAttribute("userId");
+        if (sessionUserId != userId) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        User returnedUser = userService.editUser(user);
+        return ResponseEntity.status(200).body(returnedUser);
     }
 }
-
-

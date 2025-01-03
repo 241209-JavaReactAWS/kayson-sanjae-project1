@@ -1,12 +1,17 @@
 package com.revature.controllers;
 
+import com.revature.exceptions.pokemon.InvalidPokemonException;
+import com.revature.exceptions.pokemon.PokemonIdExistsException;
+import com.revature.exceptions.pokemon.PokemonNameExistException;
 import com.revature.exceptions.pokemon.PokemonNotFoundException;
 import com.revature.models.Pokemon;
 import com.revature.services.PokemonService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -15,64 +20,42 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5174", allowCredentials = "true")
 public class PokemonController {
     private final PokemonService pokemonService;
+
     @Autowired
-    public PokemonController(PokemonService pokemonService){
+    public PokemonController(PokemonService pokemonService) {
         this.pokemonService = pokemonService;
     }
 
     @GetMapping
-    public List<Pokemon> getAllPokemons(){
-        return pokemonService.getAllPokemons();
+    public ResponseEntity<List<Pokemon>> getAllPokemons(HttpSession session) {
+        List<Pokemon> pokemons = pokemonService.getAllPokemons();
+        return ResponseEntity.ok(pokemons);
     }
 
-    @GetMapping("/id/{pokemonId}")
-    public ResponseEntity<Pokemon> getPokemonById(@PathVariable int pokemonId){
-        try{
-            Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
-            return ResponseEntity.ok(pokemon);
-        }catch(PokemonNotFoundException e){
-            return ResponseEntity.status(404).build();
-        }
+    @GetMapping("/{pokemonId}")
+    public ResponseEntity<Pokemon> getPokemonById(HttpSession session, @PathVariable int pokemonId) throws PokemonNotFoundException {
+        Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
+        return ResponseEntity.ok(pokemon);
     }
 
-    @GetMapping("name/{name}")
-    public ResponseEntity<Pokemon> getPokemonByName(@PathVariable String name){
-        try{
-            Pokemon pokemon = pokemonService.getPokemonByName(name);
-            return ResponseEntity.ok(pokemon);
-        }catch (PokemonNotFoundException e){
-            return ResponseEntity.status(404).build();
-        }
+    @DeleteMapping("/{pokemonId}")
+    public ResponseEntity<Void> deletePokemonById(HttpSession session, @PathVariable int pokemonId) {
+        pokemonService.deletePokemon(pokemonId);
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/id/{pokemonId}")
-    public ResponseEntity<Pokemon> deletePokemonById(@PathVariable int pokemonId){
-        try{
-            Pokemon pokemon = pokemonService.getPokemonById(pokemonId);
-            pokemonService.deletePokemon(pokemonId);
-            return ResponseEntity.ok(null);
-        }catch (PokemonNotFoundException ignored){}
-        return ResponseEntity.status(404).build();
+    @PostMapping
+    public ResponseEntity<Pokemon> addNewPokemon(HttpSession session, @RequestBody Pokemon pokemon) throws PokemonNameExistException, PokemonIdExistsException, InvalidPokemonException {
+        Pokemon returnedPokemon = pokemonService.addPokemon(pokemon);
+        return ResponseEntity.status(HttpStatus.CREATED).body(returnedPokemon);
     }
 
-
-    @PostMapping()
-    public ResponseEntity<Pokemon> addNewPokemon(HttpSession session, @RequestBody Pokemon pokemon){
-        try{
-            Pokemon returnedPokemon = pokemonService.savePokemon(pokemon);
-            return ResponseEntity.status(201).body(returnedPokemon);
-        }catch(Exception e){
+    @PutMapping("/{pokemonId}")
+    public ResponseEntity<Pokemon> editPokemon(HttpSession session, @PathVariable int pokemonId, @RequestBody Pokemon pokemon) throws PokemonNotFoundException, InvalidPokemonException {
+        if (pokemon.getPokemonId() != pokemonId) {
             return ResponseEntity.badRequest().build();
         }
-    }
-
-    @PutMapping
-    public ResponseEntity<Pokemon> editPokemon(HttpSession session, @RequestBody Pokemon pokemon){
-        try{
-            Pokemon returnedPokemon = pokemonService.editPokemon(pokemon);
-            return ResponseEntity.status(200).body(returnedPokemon);
-        }catch(Exception e){
-            return ResponseEntity.badRequest().build();
-        }
+        Pokemon returnedPokemon = pokemonService.editPokemon(pokemon);
+        return ResponseEntity.ok(returnedPokemon);
     }
 }
